@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#355f4d"/>
+      <stop offset="100%" stop-color="#244f3e"/>
+    </linearGradient>
+    <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a3d1ba"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#beedd6"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Rounded Squircle Base -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle inner circle accent -->
+  <circle cx="256" cy="256" r="160" fill="#4d7865" opacity="0.4"/>
+  
+  <!-- Brain / Mind aura nodes -->
+  <circle cx="256" cy="140" r="14" fill="#a3d1ba"/>
+  <circle cx="190" cy="170" r="11" fill="#a3d1ba" opacity="0.8"/>
+  <circle cx="322" cy="170" r="11" fill="#a3d1ba" opacity="0.8"/>
+  <path d="M 190 170 Q 256 130 322 170" fill="none" stroke="#a3d1ba" stroke-width="4" stroke-dasharray="6,6" opacity="0.7"/>
+
+  <!-- Pulse / ECG Waveform Line -->
+  <path d="M 90 256 L 180 256 L 215 190 L 245 325 L 285 160 L 315 295 L 340 256 L 422 256" 
+        fill="none" 
+        stroke="url(#pulseGrad)" 
+        stroke-width="16" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        filter="url(#glow)"/>
+
+  <!-- Waveform Nodes -->
+  <circle cx="90" cy="256" r="8" fill="#ffffff"/>
+  <circle cx="422" cy="256" r="8" fill="#ffffff"/>
+</svg>

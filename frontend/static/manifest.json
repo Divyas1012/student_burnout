@@ -1,0 +1,62 @@
+{
+  "id": "/?source=pwa",
+  "name": "MindPulse AI — Student Burnout & Mental Health Early Warning System",
+  "short_name": "MindPulse AI",
+  "description": "AI-powered early-warning risk screening and clinical decision support for higher education student mental health and burnout prevention.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f2fcf5",
+  "theme_color": "#355f4d",
+  "lang": "en",
+  "categories": ["education", "health", "lifestyle", "medical"],
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "10-Factor AI Survey",
+      "short_name": "AI Survey",
+      "description": "Start quick burnout and mental health check-in",
+      "url": "/#survey",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "24/7 Crisis Hotline",
+      "short_name": "Crisis Help",
+      "description": "Instant 24/7 confidential crisis and suicide lifeline",
+      "url": "/#crisis",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

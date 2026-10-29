@@ -1,0 +1,175 @@
+{
+  "best_model": "Logistic Regression",
+  "feature_names": [
+    "gpa",
+    "study_hours_per_day",
+    "academic_workload",
+    "exam_pressure",
+    "attendance_percentage",
+    "sleep_hours_per_night",
+    "sleep_quality",
+    "screen_time_hours",
+    "exercise_days",
+    "social_support",
+    "mood_energy",
+    "self_reported_stress",
+    "feeling_overwhelmed"
+  ],
+  "class_labels": [
+    "Low",
+    "Moderate",
+    "High"
+  ],
+  "models_benchmark": {
+    "Logistic Regression": {
+      "accuracy": 0.8875,
+      "precision_macro": 0.87,
+      "recall_macro": 0.7651,
+      "f1_macro": 0.8036,
+      "f1_weighted": 0.8862,
+      "cv_f1_mean": 0.866,
+      "cv_f1_std": 0.0219,
+      "confusion_matrix": [
+        [
+          166,
+          18,
+          0
+        ],
+        [
+          21,
+          184,
+          1
+        ],
+        [
+          0,
+          5,
+          5
+        ]
+      ],
+      "feature_importances": {
+        "sleep_hours_per_night": 1.0913,
+        "self_reported_stress": 1.0616,
+        "academic_workload": 0.817,
+        "exam_pressure": 0.6892,
+        "mood_energy": 0.5706,
+        "feeling_overwhelmed": 0.5661,
+        "study_hours_per_day": 0.4917,
+        "sleep_quality": 0.4763,
+        "social_support": 0.468,
+        "screen_time_hours": 0.4082,
+        "exercise_days": 0.3265,
+        "attendance_percentage": 0.1368,
+        "gpa": 0.1163
+      }
+    },
+    "Random Forest": {
+      "accuracy": 0.8525,
+      "precision_macro": 0.9024,
+      "recall_macro": 0.6454,
+      "f1_macro": 0.6847,
+      "f1_weighted": 0.8472,
+      "cv_f1_mean": 0.8395,
+      "cv_f1_std": 0.0181,
+      "confusion_matrix": [
+        [
+          156,
+          28,
+          0
+        ],
+        [
+          23,
+          183,
+          0
+        ],
+        [
+          0,
+          8,
+          2
+        ]
+      ],
+      "feature_importances": {
+        "sleep_hours_per_night": 0.1791,
+        "self_reported_stress": 0.1702,
+        "feeling_overwhelmed": 0.1121,
+        "academic_workload": 0.0813,
+        "sleep_quality": 0.0775,
+        "mood_energy": 0.0714,
+        "study_hours_per_day": 0.0608,
+        "screen_time_hours": 0.0535,
+        "attendance_percentage": 0.0445,
+        "gpa": 0.043,
+        "exam_pressure": 0.042,
+        "social_support": 0.0417,
+        "exercise_days": 0.023
+      }
+    },
+    "Support Vector Machine": {
+      "accuracy": 0.865,
+      "precision_macro": 0.8439,
+      "recall_macro": 0.7181,
+      "f1_macro": 0.7587,
+      "f1_weighted": 0.8629,
+      "cv_f1_mean": 0.8627,
+      "cv_f1_std": 0.0108,
+      "confusion_matrix": [
+        [
+          162,
+          22,
+          0
+        ],
+        [
+          25,
+          180,
+          1
+        ],
+        [
+          0,
+          6,
+          4
+        ]
+      ],
+      "feature_importances": null
+    },
+    "XGBoost": {
+      "accuracy": 0.8525,
+      "precision_macro": 0.7922,
+      "recall_macro": 0.6458,
+      "f1_macro": 0.677,
+      "f1_weighted": 0.8477,
+      "cv_f1_mean": 0.8457,
+      "cv_f1_std": 0.0174,
+      "confusion_matrix": [
+        [
+          158,
+          26,
+          0
+        ],
+        [
+          24,
+          181,
+          1
+        ],
+        [
+          0,
+          8,
+          2
+        ]
+      ],
+      "feature_importances": {
+        "self_reported_stress": 0.3289,
+        "sleep_hours_per_night": 0.1228,
+        "feeling_overwhelmed": 0.1034,
+        "mood_energy": 0.0742,
+        "academic_workload": 0.0629,
+        "sleep_quality": 0.0586,
+        "exam_pressure": 0.0432,
+        "social_support": 0.0421,
+        "study_hours_per_day": 0.0416,
+        "screen_time_hours": 0.0369,
+        "exercise_days": 0.0318,
+        "gpa": 0.0274,
+        "attendance_percentage": 0.0262
+      }
+    }
+  }
+}

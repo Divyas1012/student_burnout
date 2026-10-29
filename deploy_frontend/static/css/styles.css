@@ -1,0 +1,216 @@
+/* Stitch Design System custom styles for MindPulse AI */
+
+:root {
+  --primary: #355f4d;
+  --primary-container: #4d7865;
+  --primary-fixed: #beedd6;
+  --secondary: #5b5a87;
+  --secondary-container: #cdcaff;
+  --tertiary: #734f2d;
+  --tertiary-fixed: #ffdcbf;
+  --surface: #f2fcf5;
+  --surface-container-low: #edf6ef;
+  --surface-container: #e7f0ea;
+  --surface-container-high: #e1eae4;
+  --surface-container-highest: #dce5de;
+  --on-surface: #151d1a;
+  --on-surface-variant: #414944;
+  --outline-variant: #c0c8c2;
+  --error: #ba1a1a;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: #f2fcf5;
+  color: #151d1a;
+  overscroll-behavior: none;
+}
+
+/* Glass & Surface Cards matching Stitch */
+.stitch-card {
+  background: rgba(237, 246, 239, 0.95);
+  border: 1px solid rgba(192, 200, 194, 0.4);
+  border-radius: 1.5rem;
+  box-shadow: 0 1px 12px rgba(77, 120, 101, 0.05);
+  transition: all 0.25s ease-in-out;
+}
+
+.stitch-card:hover {
+  box-shadow: 0 8px 20px rgba(77, 120, 101, 0.08);
+}
+
+/* Risk Badges */
+.badge-low {
+  background-color: #beedd6;
+  color: #002115;
+  border: 1px solid #a3d1ba;
+}
+
+.badge-moderate {
+  background-color: #ffdcbf;
+  color: #2d1600;
+  border: 1px solid #eebd93;
+}
+
+.badge-high {
+  background-color: #ffdad6;
+  color: #93000a;
+  border: 1px solid #ffb4ab;
+}
+
+/* Subtle Pulse animation for High Risk alerts */
+@keyframes pulse-rose {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(186, 26, 26, 0);
+  }
+}
+
+.alert-pulse-high {
+  animation: pulse-rose 2s infinite;
+}
+
+/* Custom Sliders matching Stitch Primary */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #dce5de;
+  border-radius: 9999px;
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #355f4d;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(53, 95, 77, 0.3);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #4d7865;
+}
+
+/* Circular Risk Meter */
+.risk-meter-arc {
+  stroke-dasharray: 283;
+  transition: stroke-dashoffset 1s ease-in-out, stroke 0.5s ease;
+}
+
+/* Universal button icon-text baseline alignment */
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+button .material-symbols-outlined, 
+a .material-symbols-outlined,
+span .material-symbols-outlined {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+/* Modal backdrop blur */
+.modal-blur {
+  backdrop-filter: blur(8px);
+  background-color: rgba(21, 29, 26, 0.55);
+}
+
+/* Button active tap state */
+button:active {
+  transform: scale(0.98);
+}
+
+/* Hide scrollbar for clean horizontal chip swiping on mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Section scroll-margin offset for sticky header */
+.scroll-mt-header {
+  scroll-margin-top: 5.5rem;
+}
+
+@media (min-width: 640px) {
+  .scroll-mt-header {
+    scroll-margin-top: 6.5rem;
+  }
+}
+
+/* Section Spotlight animation upon quick jump navigation */
+@keyframes section-spotlight-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(53, 95, 77, 0.45);
+    border-color: #355f4d !important;
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(53, 95, 77, 0.2);
+    border-color: #355f4d !important;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(53, 95, 77, 0);
+  }
+}
+
+.section-spotlight {
+  animation: section-spotlight-pulse 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Mobile Safe Bottom Spacing */
+.safe-bottom-padding {
+  padding-bottom: max(5.5rem, calc(4.5rem + env(safe-area-inset-bottom)));
+}
+
+/* Standalone App Page Transitions */
+.app-page {
+  animation: pageFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Print layout */
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  header, footer, nav, .no-print, button, .modal-close-btn, #pwa-install-modal, #crisis-modal, #mobile-bottom-nav, #btn-back-to-top, #student-quick-nav, #counselor-quick-nav {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .stitch-card, .rounded-lg, .rounded-xl {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+  }
+}
+

@@ -1,0 +1,7 @@
+uvicorn
+sqlalchemy
+joblib
+numpy
+fastapi
+scikit-learn
+httpx

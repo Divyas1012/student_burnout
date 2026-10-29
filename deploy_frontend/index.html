@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" name="viewport"/>
+  <title>MindPulse AI — Student Burnout & Mental Health Early Warning System</title>
+  
+  <!-- Progressive Web App (PWA) Meta & Manifest -->
+  <link rel="manifest" href="/manifest.json"/>
+  <meta name="theme-color" content="#355f4d"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="MindPulse AI"/>
+  <link rel="icon" type="image/svg+xml" href="/static/icons/icon.svg"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32.png"/>
+  <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png"/>
+
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-error-container": "#93000a",
+          "surface-bright": "#f2fcf5",
+          "on-primary-container": "#cffee7",
+          "surface-container-high": "#e1eae4",
+          "on-primary": "#ffffff",
+          "surface-dim": "#d3dcd6",
+          "on-secondary-fixed-variant": "#44426e",
+          "inverse-on-surface": "#eaf3ec",
+          "error": "#ba1a1a",
+          "surface-container-lowest": "#ffffff",
+          "primary": "#355f4d",
+          "outline": "#717974",
+          "surface-container": "#e7f0ea",
+          "primary-fixed": "#beedd6",
+          "surface-tint": "#3c6754",
+          "on-tertiary-fixed-variant": "#61401f",
+          "on-tertiary-container": "#fff1e7",
+          "on-tertiary": "#ffffff",
+          "on-primary-fixed-variant": "#244f3e",
+          "secondary": "#5b5a87",
+          "on-surface-variant": "#414944",
+          "inverse-primary": "#a3d1ba",
+          "on-surface": "#151d1a",
+          "primary-fixed-dim": "#a3d1ba",
+          "inverse-surface": "#2a322e",
+          "on-tertiary-fixed": "#2d1600",
+          "error-container": "#ffdad6",
+          "on-secondary": "#ffffff",
+          "surface-container-low": "#edf6ef",
+          "outline-variant": "#c0c8c2",
+          "on-secondary-container": "#555381",
+          "on-secondary-fixed": "#181640",
+          "tertiary-fixed-dim": "#eebd93",
+          "surface-container-highest": "#dce5de",
+          "surface": "#f2fcf5",
+          "tertiary-fixed": "#ffdcbf",
+          "background": "#f2fcf5",
+          "tertiary-container": "#8e6743",
+          "tertiary": "#734f2d",
+          "secondary-fixed-dim": "#c4c1f6",
+          "on-background": "#151d1a",
+          "primary-container": "#4d7865",
+          "surface-variant": "#dce5de",
+          "secondary-container": "#cdcaff",
+          "on-error": "#ffffff",
+          "secondary-fixed": "#e3dfff",
+          "on-primary-fixed": "#002115"
+        },
+        borderRadius: {
+          DEFAULT: "1rem",
+          lg: "2rem",
+          xl: "3rem",
+          full: "9999px"
+        },
+        spacing: {
+          "gutter-tablet": "1.5rem",
+          "gutter-mobile": "1rem",
+          "space-sm": "0.75rem",
+          "space-4xl": "6rem",
+          "container-max": "76rem",
+          "space-3xs": "0.125rem",
+          "gutter-desktop": "2rem",
+          "space-2xl": "3rem",
+          "space-md": "1rem",
+          "space-3xl": "4rem",
+          "space-lg": "1.5rem",
+          "space-xs": "0.5rem",
+          "space-xl": "2rem",
+          "space-2xs": "0.25rem"
+        },
+        fontFamily: {
+          "body-md": ["Plus Jakarta Sans", "sans-serif"],
+          "display-hero": ["Manrope", "sans-serif"],
+          "headline-lg": ["Manrope", "sans-serif"],
+          "headline-md": ["Manrope", "sans-serif"],
+          "headline-sm": ["Manrope", "sans-serif"],
+          "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+          "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+          "label-md": ["Plus Jakarta Sans", "sans-serif"],
+          "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+          "caption": ["Plus Jakarta Sans", "sans-serif"]
+        }
+      }
+    }
+  };
+  </script>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-background font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col">
+
+  <!-- ========================================================================= -->
+  <!-- 1. STUDENT LANDING PAGE (DEFAULT FOR NEW VISITORS & UNREGISTERED STUDENTS) -->
+  <!-- ========================================================================= -->
+  <div id="landing-page-view" class="w-full flex-grow flex flex-col">
+    
+    <!-- Landing Header -->
+    <header class="w-full bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 sticky top-0 z-40">
+      <div class="h-16 sm:h-20 max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-gutter-desktop flex items-center justify-between gap-2 sm:gap-4">
+        
+        <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm shrink-0">
+            <span class="material-symbols-outlined text-xl sm:text-2xl">psychology</span>
+          </div>
+          <span class="font-headline-sm text-base sm:text-headline-sm text-primary tracking-tight font-bold">MindPulse</span>
+          <span class="hidden md:inline-block px-2.5 py-0.5 rounded-full bg-primary-fixed/60 text-on-primary-fixed font-caption text-[11px] font-semibold uppercase tracking-wider ml-1">University Care AI</span>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <button type="button" class="btn-open-crisis-helpline hidden lg:inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-full bg-rose-100 hover:bg-rose-200 text-rose-800 font-label-sm text-xs font-semibold transition shrink-0">
+            <span class="material-symbols-outlined text-sm">emergency</span>
+            <span>24/7 Lifeline (988)</span>
+          </button>
+
+          <button id="btn-install-app-landing" type="button" class="btn-install-pwa inline-flex items-center justify-center gap-1.5 h-9 px-3 sm:px-4 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-md text-xs font-semibold shadow-sm transition border border-outline-variant/30 shrink-0" title="Install MindPulse AI on your PC or Mobile device">
+            <span class="material-symbols-outlined text-base">download_for_offline</span>
+            <span class="hidden sm:inline">Download App</span>
+            <span class="inline sm:hidden">App</span>
+          </button>
+          
+          <button id="landing-nav-login-btn" type="button" class="h-9 px-3.5 sm:px-5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-xs font-semibold shadow-sm transition inline-flex items-center justify-center gap-1 shrink-0">
+            <span>Sign In</span>
+            <span class="hidden sm:inline"> / Register</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Landing Hero Section (2-Columns with Integrated Auth Card) -->
+    <section class="relative w-full overflow-hidden py-space-3xl px-gutter-desktop max-w-[76rem] mx-auto flex-grow flex items-center">
+      <!-- Ambient Backdrops -->
+      <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none"></div>
+      <div class="absolute left-1/4 -bottom-20 w-80 h-80 rounded-full bg-secondary-fixed/25 blur-3xl pointer-events-none"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-2xl items-center w-full relative z-10">
+        
+        <!-- Left Hero Copy (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-space-lg">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-fixed/50 text-on-primary-fixed w-fit font-label-sm text-xs font-semibold border border-primary/20">
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            <span>Continuous Psychological Telemetry for University Students</span>
+          </div>
+
+          <h1 class="font-display-hero text-4xl sm:text-5xl font-extrabold text-on-surface tracking-tight leading-tight">
+            Balance High Academic Ambition with Mindful Vitality.
+          </h1>
+
+          <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+            MindPulse AI monitors study intensity, sleep architecture, digital strain, and emotional valence to detect burnout early—delivering prescriptive rest plans and compassionate safety nets before academic exhaustion sets in.
+          </p>
+
+          <!-- 3 Key Features Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <div class="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-primary text-xl">self_improvement</span>
+              <div>
+                <span class="block font-semibold text-xs text-on-surface">60s Daily Pulse</span>
+                <span class="font-caption text-[10px] text-on-surface-variant">Low-friction telemetry</span>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-secondary text-xl">model_training</span>
+              <div>
+                <span class="block font-semibold text-xs text-on-surface">Explainable ML</span>
+                <span class="font-caption text-[10px] text-on-surface-variant">88.6% Weighted F1</span>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-tertiary text-xl">shield</span>
+              <div>
+                <span class="block font-semibold text-xs text-on-surface">Safety Net</span>
+                <span class="font-caption text-[10px] text-on-surface-variant">Closed-loop triage</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-3">
+            <button id="landing-hero-cta" type="button" class="px-6 py-3 rounded-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs sm:text-sm shadow-md transition flex items-center gap-2">
+              <span>Sign In / Get Started</span>
+              <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </button>
+            <a href="#how-it-works-section" class="px-4 py-3 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-primary font-semibold text-xs transition inline-flex items-center gap-1.5 border border-outline-variant/30">
+              <span class="material-symbols-outlined text-base">info</span>
+              <span>How It Works</span>
+            </a>
+            <button type="button" class="btn-open-crisis-helpline inline-flex sm:hidden items-center gap-1 px-3.5 py-3 rounded-full bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-semibold transition shrink-0">
+              <span class="material-symbols-outlined text-sm">emergency</span>
+              <span>Crisis (988)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Dedicated Interactive Auth Card (5 cols) -->
+        <div class="lg:col-span-5 w-full">
+          <div id="landing-auth-card" class="p-space-xl rounded-xl bg-surface-container-low/95 shadow-xl border border-outline-variant/40 backdrop-blur-md space-y-5">
+            
+            <!-- Auth Header & Pill Tab Switcher -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="landing-auth-card-title" class="font-headline-sm text-lg font-bold text-on-surface">Student Portal Sign In</h3>
+                  <p class="font-body-sm text-xs text-on-surface-variant">Access your personalized telemetry dashboard</p>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-primary-fixed/50 text-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-lg">lock</span>
+                </div>
+              </div>
+
+              <!-- Pill Tab Switcher -->
+              <div class="flex p-1 bg-surface-container rounded-full border border-outline-variant/30">
+                <button id="landing-tab-login" class="flex-1 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-on-primary shadow-sm" type="button">
+                  Sign In
+                </button>
+                <button id="landing-tab-register" class="flex-1 py-1.5 rounded-full text-xs font-semibold transition-all text-on-surface-variant hover:text-on-surface" type="button">
+                  Create Account
+                </button>
+              </div>
+            </div>
+
+            <!-- Error & Success Banners -->
+            <div id="landing-auth-error" class="hidden p-3 rounded-lg bg-error-container text-on-error-container text-xs font-medium border border-red-300 flex items-start gap-2">
+              <span class="material-symbols-outlined text-base shrink-0 mt-0.5">error</span>
+              <span id="landing-auth-error-text">Authentication failed.</span>
+            </div>
+            <div id="landing-auth-success" class="hidden p-3 rounded-lg bg-primary-fixed text-on-primary-fixed text-xs font-medium border border-primary/30 flex items-start gap-2">
+              <span class="material-symbols-outlined text-base shrink-0 mt-0.5">check_circle</span>
+              <span id="landing-auth-success-text">Success! Transitioning to your dashboard...</span>
+            </div>
+
+            <!-- ================= FORM 1: LANDING SIGN IN ================= -->
+            <form id="landing-form-login" class="space-y-3.5">
+              <div>
+                <label for="landing-login-email" class="block text-xs font-semibold text-on-surface mb-1">University Email</label>
+                <div class="relative">
+                  <input type="email" id="landing-login-email" required placeholder="student@university.edu" class="w-full text-xs p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary pl-8">
+                  <span class="material-symbols-outlined text-base text-outline absolute left-2.5 top-2.5">mail</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <label for="landing-login-password" class="block text-xs font-semibold text-on-surface">Password</label>
+                  <span class="font-caption text-[10px] text-on-surface-variant">Default: password123</span>
+                </div>
+                <div class="relative">
+                  <input type="password" id="landing-login-password" required placeholder="••••••••" class="w-full text-xs p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary pl-8 pr-8">
+                  <span class="material-symbols-outlined text-base text-outline absolute left-2.5 top-2.5">lock</span>
+                  <button type="button" id="landing-toggle-pwd" class="material-symbols-outlined text-base text-outline absolute right-2.5 top-2.5 hover:text-on-surface">visibility</button>
+                </div>
+              </div>
+
+              <button type="submit" id="landing-btn-login" class="w-full py-2.5 rounded-full text-xs font-semibold text-on-primary bg-primary hover:bg-primary-container shadow-md transition flex items-center justify-center gap-1.5">
+                <span class="material-symbols-outlined text-base">login</span>
+                <span>Sign In to Dashboard</span>
+              </button>
+
+              <!-- 1-Click Viva Demo Profiles -->
+              <div class="pt-2 border-t border-outline-variant/30 space-y-1.5">
+                <span class="block text-center font-caption text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">
+                  Quick 1-Click Evaluation Profiles
+                </span>
+                <div class="grid grid-cols-3 gap-1.5">
+                  <button type="button" class="landing-demo-login p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition text-center border border-outline-variant/30" data-email="alex.chen@student.university.edu" data-pwd="password123">
+                    <span class="block font-semibold text-[10px] text-on-surface">Alex Chen</span>
+                    <span class="block text-[8px] text-error font-bold">High Risk</span>
+                  </button>
+                  <button type="button" class="landing-demo-login p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition text-center border border-outline-variant/30" data-email="p.sharma@student.university.edu" data-pwd="password123">
+                    <span class="block font-semibold text-[10px] text-on-surface">Priya Sharma</span>
+                    <span class="block text-[8px] text-primary font-bold">Optimal</span>
+                  </button>
+                  <button type="button" class="landing-demo-login p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition text-center border border-outline-variant/30" data-email="s.jenkins@university.edu" data-pwd="password123">
+                    <span class="block font-semibold text-[10px] text-on-surface">Dr. Jenkins</span>
+                    <span class="block text-[8px] text-secondary font-bold">Counselor</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- ================= FORM 2: LANDING CREATE ACCOUNT ================= -->
+            <form id="landing-form-register" class="space-y-3 hidden">
+              <!-- Role Picker -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Account Role</label>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button type="button" id="landing-role-student" class="landing-role-btn py-1.5 px-3 rounded-lg text-xs font-semibold border-2 border-primary bg-primary-fixed/40 text-primary transition flex items-center justify-center gap-1" data-role="student">
+                    <span class="material-symbols-outlined text-sm">school</span>
+                    <span>Student</span>
+                  </button>
+                  <button type="button" id="landing-role-counselor" class="landing-role-btn py-1.5 px-3 rounded-lg text-xs font-semibold border border-outline-variant/40 bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition flex items-center justify-center gap-1" data-role="counselor">
+                    <span class="material-symbols-outlined text-sm">medical_services</span>
+                    <span>Counselor</span>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label for="landing-reg-name" class="block text-xs font-semibold text-on-surface mb-1">Full Name</label>
+                <input type="text" id="landing-reg-name" required placeholder="e.g. Marcus Vance" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+
+              <div>
+                <label for="landing-reg-email" class="block text-xs font-semibold text-on-surface mb-1">University Email</label>
+                <input type="email" id="landing-reg-email" required placeholder="marcus.v@student.university.edu" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+
+              <div>
+                <label for="landing-reg-password" class="block text-xs font-semibold text-on-surface mb-1">Password (min 6 chars)</label>
+                <input type="password" id="landing-reg-password" minlength="6" required placeholder="••••••••" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+
+              <!-- Student Specific Fields -->
+              <div id="landing-reg-student-fields" class="space-y-2 pt-1 border-t border-outline-variant/30">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label for="landing-reg-id" class="block text-xs font-semibold text-on-surface mb-1">Student ID #</label>
+                    <input type="text" id="landing-reg-id" placeholder="CS2026101" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary">
+                  </div>
+                  <div>
+                    <label for="landing-reg-year" class="block text-xs font-semibold text-on-surface mb-1">Year of Study</label>
+                    <select id="landing-reg-year" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary">
+                      <option value="1">1st Year</option>
+                      <option value="2">2nd Year</option>
+                      <option value="3" selected>3rd Year</option>
+                      <option value="4">4th Year</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="landing-reg-dept" class="block text-xs font-semibold text-on-surface mb-1">Major / Department</label>
+                  <input type="text" id="landing-reg-dept" value="Computer Science & Engineering" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+              </div>
+
+              <button type="submit" id="landing-btn-register" class="w-full py-2.5 rounded-full text-xs font-semibold text-on-primary bg-primary hover:bg-primary-container shadow-md transition flex items-center justify-center gap-1.5 mt-1">
+                <span class="material-symbols-outlined text-base">person_add</span>
+                <span>Create Student Account</span>
+              </button>
+            </form>
+
+            <div class="text-center pt-1 text-xs text-on-surface-variant">
+              <span id="landing-auth-switch-prompt">Don't have an account?</span>
+              <button type="button" id="landing-btn-toggle-auth" class="text-primary font-semibold hover:underline ml-1">Create an account</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How MindPulse Works (3 Step Cards) -->
+    <section id="how-it-works-section" class="w-full py-space-2xl bg-surface-container-low border-t border-outline-variant/30">
+      <div class="max-w-[76rem] mx-auto px-gutter-desktop space-y-space-xl">
+        <div class="text-center max-w-xl mx-auto space-y-2">
+          <span class="font-label-sm text-xs text-primary font-bold uppercase tracking-wider">Predictive Methodology</span>
+          <h2 class="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">How the Sanctuary System Operates</h2>
+          <p class="font-body-sm text-xs text-on-surface-variant">A closed-loop AI architecture combining student check-ins with clinical safety nets.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+          
+          <div class="p-space-lg rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col justify-between space-y-3">
+            <div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-sm">
+              01
+            </div>
+            <div>
+              <h3 class="font-headline-sm font-semibold text-on-surface text-base">Lifestyle & Study Telemetry</h3>
+              <p class="font-body-sm text-xs text-on-surface-variant mt-1">
+                Log your sleep hours, digital screen exposure, coursework volume, and subjective stress via the 60s Daily Pulse or 10-Factor Simulator.
+              </p>
+            </div>
+            <div class="pt-2 text-xs font-semibold text-primary flex items-center gap-1">
+              <span>MBI-SS Calibrated</span>
+              <span class="material-symbols-outlined text-sm">check_circle</span>
+            </div>
+          </div>
+
+          <div class="p-space-lg rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col justify-between space-y-3">
+            <div class="w-10 h-10 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-sm">
+              02
+            </div>
+            <div>
+              <h3 class="font-headline-sm font-semibold text-on-surface text-base">Machine Learning Inference</h3>
+              <p class="font-body-sm text-xs text-on-surface-variant mt-1">
+                The champion classifier calculates your continuous risk index (0–100%) and explains the dominant contributing drivers and protective buffers.
+              </p>
+            </div>
+            <div class="pt-2 text-xs font-semibold text-secondary flex items-center gap-1">
+              <span>88.6% Weighted F1</span>
+              <span class="material-symbols-outlined text-sm">psychology</span>
+            </div>
+          </div>
+
+          <div class="p-space-lg rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col justify-between space-y-3">
+            <div class="w-10 h-10 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center font-bold text-sm">
+              03
+            </div>
+            <div>
+              <h3 class="font-headline-sm font-semibold text-on-surface text-base">Prescriptions & Care Escalation</h3>
+              <p class="font-body-sm text-xs text-on-surface-variant mt-1">
+                Receive targeted restorative recovery plans. If acute risk is identified, the system quietly alerts campus counselors for confidential human outreach.
+              </p>
+            </div>
+            <div class="pt-2 text-xs font-semibold text-tertiary flex items-center gap-1">
+              <span>Human-in-the-Loop</span>
+              <span class="material-symbols-outlined text-sm">verified_user</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Landing Footer -->
+    <footer class="w-full bg-surface-container-high/40 border-t border-outline-variant/30 py-6 text-xs text-on-surface-variant">
+      <div class="max-w-[76rem] mx-auto px-gutter-desktop flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span>© 2026 MindPulse University Care AI. College Final-Year Project.</span>
+        <div class="flex items-center gap-4">
+          <a class="hover:text-on-surface transition cursor-pointer" onclick="document.getElementById('crisis-modal').classList.remove('hidden')">24/7 Crisis Helplines</a>
+          <a class="hover:text-on-surface transition cursor-pointer" onclick="alert('FERPA Safeguards: Student mental health telemetry is strictly private and non-diagnostic.')">FERPA Disclosures</a>
+          <a class="hover:text-on-surface transition cursor-pointer" onclick="alert('AI Ethics: Operates as an educational early warning screening tool under licensed counselor oversight.')">Ethical Guidelines</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 2. AUTHENTICATED APPLICATION & DASHBOARD (ACCESSIBLE POST-LOGIN / SIGNUP)  -->
+  <!-- ========================================================================= -->
+  <div id="app-dashboard-view" class="hidden w-full flex-grow flex flex-col">
+    
+    <!-- Authenticated Header (Stitch Navigation) -->
+    <header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_12px_rgba(77,120,101,0.04)] no-print">
+      <div class="h-16 sm:h-20 max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-gutter-desktop flex items-center justify-between gap-2 sm:gap-space-md">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center gap-space-lg shrink-0">
+          <div class="flex items-center gap-space-xs cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm">
+              <span class="material-symbols-outlined text-xl">psychology</span>
+            </div>
+            <span class="font-headline-sm text-base sm:text-headline-sm text-primary tracking-tight font-semibold">MindPulse</span>
+          </div>
+
+          <!-- Stitch Nav Tabs Container -->
+          <nav class="hidden lg:flex items-center gap-1 p-1 rounded-full bg-surface-container-low/80 border border-outline-variant/30 text-xs">
+            <a id="nav-student-dashboard" data-page="dashboard" class="nav-tab-link px-3.5 py-1.5 rounded-full font-label-md text-xs bg-primary-container text-on-primary font-semibold transition-all cursor-pointer shadow-sm">
+              Dashboard
+            </a>
+            <a id="nav-daily-pulse" data-page="pulse" class="nav-tab-link px-3.5 py-1.5 rounded-full font-label-md text-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+              Daily Pulse
+            </a>
+            <a id="nav-burnout-trends" data-page="survey" class="nav-tab-link px-3.5 py-1.5 rounded-full font-label-md text-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+              10-Factor AI
+            </a>
+            <a id="nav-pressure-spikes" data-page="spikes" class="nav-tab-link px-3.5 py-1.5 rounded-full font-label-md text-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+              Spikes & Plans
+            </a>
+            <a id="nav-care-resources" data-page="care" class="nav-tab-link px-3.5 py-1.5 rounded-full font-label-md text-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+              Care Sanctuary
+            </a>
+            <a id="nav-counselor-portal" data-page="counselor" class="hidden nav-tab-link px-3.5 py-1.5 rounded-full font-label-md text-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+              Counselor Surveillance
+            </a>
+          </nav>
+        </div>
+
+        <!-- Right Header Controls -->
+        <div class="flex items-center gap-1.5 sm:gap-space-sm shrink-0">
+          
+          <!-- Active Student Selector Dropdown (Hidden for Students, Visible for Counselors) -->
+          <div id="student-selector-wrapper" class="hidden flex items-center gap-space-xs h-9 px-space-sm rounded-full bg-surface-container-low border border-outline-variant/40 text-xs shrink-0">
+            <span class="material-symbols-outlined text-sm text-primary">person</span>
+            <select id="student-selector" class="bg-transparent font-medium text-on-surface focus:outline-none cursor-pointer max-w-[170px] sm:max-w-[220px] truncate">
+              <!-- Dynamically populated via JS -->
+            </select>
+          </div>
+
+          <!-- Live Status Pill -->
+          <div class="hidden sm:flex items-center gap-space-xs h-9 px-3 rounded-full bg-surface-container-low border border-outline-variant/40 shrink-0">
+            <span id="nav-status-dot" class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Status: <span id="nav-status-text" class="font-label-sm text-label-sm text-primary font-semibold">Balanced</span></span>
+          </div>
+
+          <!-- PWA Download / Install App Button -->
+          <button id="btn-install-app-nav" title="Install MindPulse App on Desktop or Mobile" class="btn-install-pwa h-9 w-9 sm:w-auto px-0 sm:px-3.5 rounded-full inline-flex items-center justify-center gap-1.5 bg-primary-fixed hover:bg-primary-container hover:text-on-primary text-on-primary-fixed-variant font-label-sm text-xs font-semibold transition-all shadow-sm shrink-0" type="button">
+            <span class="material-symbols-outlined text-base">download_for_offline</span>
+            <span class="hidden md:inline">Download App</span>
+            <span class="hidden sm:inline md:hidden">App</span>
+          </button>
+
+          <!-- ML Benchmark Button (hidden on mobile, visible on sm and up) -->
+          <button id="btn-view-benchmark" title="View ML Model Benchmark" class="hidden sm:inline-flex w-9 h-9 rounded-full items-center justify-center bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all shrink-0" type="button">
+            <span class="material-symbols-outlined text-lg">analytics</span>
+          </button>
+
+          <!-- Crisis Hotline Button -->
+          <button id="btn-crisis-helpline" aria-label="Crisis Rapid Connect" class="relative w-9 h-9 rounded-full inline-flex items-center justify-center bg-rose-100 hover:bg-rose-200 text-rose-800 transition-all shadow-sm shrink-0" type="button">
+            <span class="material-symbols-outlined text-lg">emergency</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
+          </button>
+
+          <!-- Logged-in User Pill & Logout Button -->
+          <div class="flex items-center gap-1.5 pl-1 shrink-0">
+            <div class="flex items-center gap-1.5 h-9 px-2 sm:px-3 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs shrink-0">
+              <div class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-[10px] shrink-0">
+                <span id="nav-user-initials">MP</span>
+              </div>
+              <span id="nav-user-name" class="font-medium text-on-surface hidden md:inline truncate max-w-[90px]">Alex</span>
+              <span id="nav-user-role-badge" class="hidden sm:inline-block px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed text-[9px] font-bold uppercase shrink-0">Student</span>
+            </div>
+            
+            <button id="btn-logout" class="w-9 h-9 rounded-full inline-flex items-center justify-center bg-surface-container-high hover:bg-red-50 hover:text-error text-on-surface-variant transition text-xs shrink-0" title="Sign Out & Return to Landing Page">
+              <span class="material-symbols-outlined text-base">logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Ethical Safeguard Notice Banner -->
+    <div class="mt-20 bg-surface-container-high/60 border-b border-outline-variant/30 px-4 py-2 text-xs text-on-surface-variant font-medium no-print">
+      <div class="max-w-[76rem] mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-space-xs">
+          <span class="material-symbols-outlined text-primary text-base">verified_user</span>
+          <span>
+            <strong>Ethical Safeguard & Non-Diagnostic Notice:</strong> MindPulse AI operates strictly as an educational risk-screening and early-warning decision tool. It does not provide psychiatric diagnoses. High-risk indicators prompt human counselor triage.
+          </span>
+        </div>
+        <button class="text-primary font-semibold underline text-xs ml-4 hover:text-on-surface transition" onclick="document.getElementById('crisis-modal').classList.remove('hidden')">Emergency Help</button>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Content Container -->
+        <!-- Main Dashboard Content Container -->
+    <main class="w-full bg-background flex-grow max-w-[76rem] mx-auto px-3 sm:px-6 lg:px-gutter-desktop py-4 sm:py-space-xl pb-28 lg:pb-space-4xl">
+      
+            <!-- ================= PAGE 1: STUDENT DASHBOARD (DEFAULT OVERVIEW) ================= -->
+      <div id="page-dashboard" class="app-page flex flex-col w-full pb-12 gap-space-xl">
+        <div id="sec-hero-banner" class="scroll-mt-header relative w-full overflow-hidden rounded-xl bg-gradient-to-b from-primary-fixed/20 via-surface-container-low to-surface-container/40 p-space-xl shadow-sm border border-outline-variant/30">
+          <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-secondary-fixed/25 blur-3xl pointer-events-none"></div>
+          <div class="absolute left-1/3 -bottom-20 w-64 h-64 rounded-full bg-primary-fixed/30 blur-2xl pointer-events-none"></div>
+          
+          <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-space-lg">
+            <div class="flex flex-col gap-space-2xs">
+              <div class="flex items-center gap-space-xs">
+                <span class="inline-flex items-center justify-center w-2.5 h-2.5 rounded-full bg-primary"></span>
+                <span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Personal Equilibrium Telemetry</span>
+              </div>
+              <h1 id="hero-greeting-text" class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">
+                Good afternoon, Student.
+              </h1>
+              <p class="font-body-lg text-body-lg text-on-surface-variant flex items-center gap-space-xs flex-wrap">
+                <span>Your cognitive battery is at</span>
+                <span id="hero-battery-badge" class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-medium font-label-md text-label-md">
+                  <span class="material-symbols-outlined text-sm">battery_charging_full</span>
+                  <span id="hero-battery-score">—% (Pending Survey)</span>
+                </span>
+                <span>— Ready for mindful focus today.</span>
+              </p>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-space-sm self-start md:self-auto shrink-0 flex-wrap">
+              <button id="triggerCheckIn" class="inline-flex items-center justify-center gap-space-xs px-5 sm:px-7 h-11 sm:h-12 rounded-full bg-primary hover:bg-primary-container text-on-primary transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 group">
+                <span class="material-symbols-outlined text-lg transition-transform group-hover:rotate-12">self_improvement</span>
+                <span class="font-label-md text-label-md font-medium text-xs sm:text-sm">Take 60s Micro-Check-in</span>
+              </button>
+              <button id="btn-download-student-report" class="inline-flex items-center justify-center gap-space-xs px-4 sm:px-5 h-11 sm:h-12 rounded-full bg-surface-container-highest/90 hover:bg-surface-container-high text-on-surface transition-all shadow-sm" title="Download Burnout & Well-being Assessment Report (PDF / Print)">
+                <span class="material-symbols-outlined text-lg">download</span>
+                <span class="font-label-md text-label-md font-medium text-xs sm:text-sm hidden sm:inline">Download Report</span>
+              </button>
+              <button id="btn-refresh-telemetry" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-surface-container-highest/80 hover:bg-surface-container-high text-on-surface inline-flex items-center justify-center transition-all shadow-sm shrink-0" title="Refresh Telemetry">
+                <span class="material-symbols-outlined text-xl">sync</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW ACCOUNT / EMPTY STATE BANNER (NO DEFAULT/FAKE DATA) -->
+        <div id="dashboard-empty-state" class="hidden p-6 rounded-xl bg-gradient-to-r from-primary-fixed/30 via-surface-container-low to-secondary-fixed/20 border border-primary/20 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-md">
+              <span class="material-symbols-outlined text-2xl">assignment_late</span>
+            </div>
+            <div>
+              <h3 class="font-headline-sm text-base font-bold text-on-surface">No Survey Telemetry Recorded Yet</h3>
+              <p class="font-body-sm text-xs text-on-surface-variant max-w-xl mt-1">
+                To guarantee 100% genuine insight, default telemetry is disabled. Attend your 60-Second Pulse or 10-Factor AI Survey so machine learning can calculate your genuine Burnout Risk Index, Cognitive Battery, and Rest Prescriptions.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-start md:self-auto shrink-0">
+            <button type="button" onclick="window.navigateToPage('survey')" class="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs whitespace-nowrap shadow-md inline-flex items-center gap-1.5 transition">
+              <span class="material-symbols-outlined text-base">quiz</span>
+              <span>Attend 10-Factor Survey</span>
+            </button>
+            <button type="button" onclick="window.navigateToPage('pulse')" class="px-4 py-2.5 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-xs whitespace-nowrap shadow-sm inline-flex items-center gap-1.5 transition">
+              <span class="material-symbols-outlined text-base">timer</span>
+              <span>60s Pulse</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="sec-metrics" class="scroll-mt-header grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-lg">
+          
+          <!-- Card 1: Burnout Risk Index -->
+          <div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-low/90 shadow-sm hover:shadow-md transition-all duration-300 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <span class="font-label-md text-label-md text-on-surface-variant">Burnout Risk Index</span>
+              <span class="w-8 h-8 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-base">spa</span>
+              </span>
+            </div>
+            <div class="mt-space-md">
+              <div class="flex items-baseline gap-space-xs">
+                <span id="metric-risk-val" class="font-display-hero text-headline-lg font-bold text-on-surface">—</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">/ 100</span>
+              </div>
+              <div class="mt-space-xs flex items-center justify-between">
+                <span class="inline-flex items-center gap-1 text-primary font-label-sm text-label-sm">
+                  <span class="material-symbols-outlined text-xs">arrow_downward</span>
+                  AI Evaluated
+                </span>
+                <span id="metric-risk-badge" class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-caption text-caption font-semibold shrink-0 whitespace-nowrap">Pending Survey</span>
+              </div>
+            </div>
+            <div class="w-full bg-surface-container h-2 rounded-full mt-space-md overflow-hidden">
+              <div id="metric-risk-gauge" class="bg-gradient-to-r from-primary via-primary-container to-secondary h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Card 2: Study Load vs Capacity -->
+          <div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-low/90 shadow-sm hover:shadow-md transition-all duration-300 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <span class="font-label-md text-label-md text-on-surface-variant">Study Load vs Capacity</span>
+              <span class="w-8 h-8 rounded-full bg-secondary-fixed/50 flex items-center justify-center text-secondary">
+                <span class="material-symbols-outlined text-base">auto_stories</span>
+              </span>
+            </div>
+            <div class="mt-space-md">
+              <div class="flex items-baseline gap-space-2xs">
+                <span id="metric-study-hours" class="font-display-hero text-headline-lg font-bold text-on-surface">—</span>
+                <span class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">/ 35 hrs</span>
+              </div>
+              <div class="mt-space-xs flex items-center justify-between">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Cognitive buffer available</span>
+                <span id="metric-study-badge" class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-caption text-caption font-semibold shrink-0 whitespace-nowrap">Awaiting Input</span>
+              </div>
+            </div>
+            <div class="w-full bg-surface-container h-2 rounded-full mt-space-md overflow-hidden">
+              <div id="metric-study-gauge" class="bg-secondary h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Card 3: Sleep & Recovery Score -->
+          <div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-low/90 shadow-sm hover:shadow-md transition-all duration-300 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <span class="font-label-md text-label-md text-on-surface-variant">Sleep & Recovery</span>
+              <span class="w-8 h-8 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-base">nights_stay</span>
+              </span>
+            </div>
+            <div class="mt-space-md">
+              <div class="flex items-baseline gap-space-2xs">
+                <span id="metric-sleep-hours" class="font-display-hero text-headline-lg font-bold text-on-surface">—</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">hrs avg</span>
+              </div>
+              <div class="mt-space-xs flex items-center justify-between">
+                <span class="font-body-sm text-body-sm text-primary font-medium flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Circadian restoration
+                </span>
+                <span id="metric-sleep-badge" class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-caption text-caption font-semibold shrink-0 whitespace-nowrap">No Data</span>
+              </div>
+            </div>
+            <div class="w-full bg-surface-container h-2 rounded-full mt-space-md overflow-hidden">
+              <div id="metric-sleep-gauge" class="bg-primary h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Card 4: Mental Clarity & Mood -->
+          <div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-low/90 shadow-sm hover:shadow-md transition-all duration-300 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <span class="font-label-md text-label-md text-on-surface-variant">Clarity & Mood State</span>
+              <span class="w-8 h-8 rounded-full bg-tertiary-fixed/60 flex items-center justify-center text-tertiary">
+                <span class="material-symbols-outlined text-base">psychology</span>
+              </span>
+            </div>
+            <div class="mt-space-md">
+              <div class="flex items-baseline gap-space-xs">
+                <span id="metric-mood-text" class="font-headline-md text-headline-md font-bold text-on-surface">Awaiting Telemetry</span>
+              </div>
+              <div class="mt-space-xs flex items-center justify-between">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Longitudinal telemetry</span>
+                <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-caption text-caption font-semibold shrink-0 whitespace-nowrap">Pending</span>
+              </div>
+            </div>
+            <div class="w-full bg-surface-container h-2 rounded-full mt-space-md overflow-hidden">
+              <div id="metric-mood-gauge" class="bg-tertiary-container h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Main Content 2-Column Grid (8 cols Left, 4 cols Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+          <div class="lg:col-span-8 flex flex-col gap-space-xl">
+            <div id="sec-forecast" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-lg border border-outline-variant/30">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+                <div>
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-primary text-xl">insights</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">7-Day Cognitive Fatigue vs Academic Load</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Syllabus-predicted workload paired with your bio-rhythm recovery curve</p>
+                </div>
+                
+                <div class="flex items-center gap-space-md shrink-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-secondary"></span>
+                    <span class="font-caption text-caption text-on-surface-variant">Coursework Load</span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-primary"></span>
+                    <span class="font-caption text-caption text-on-surface-variant">Cognitive Reserve (%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full bg-surface-container-lowest/80 rounded-lg p-space-md relative overflow-hidden">
+                <div class="h-72 w-full">
+                  <canvas id="student-trend-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-space-sm p-space-md rounded-lg bg-surface-container">
+                <span class="material-symbols-outlined text-primary text-2xl shrink-0 mt-0.5">cloud_download</span>
+                <div class="flex flex-col gap-1">
+                  <span class="font-label-md text-label-md font-semibold text-on-surface">Algorithmic Rest Prescription for Thursday</span>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Your predicted cognitive battery drops to <span class="font-semibold text-on-surface">42%</span> around 3:30 PM due to consecutive Organic Chemistry & Biostats seminars. We scheduled an automatic 30-minute quiet zone at <span class="font-medium text-primary">Memorial Library Conservatory</span> prior to exam review.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-4 flex flex-col gap-space-xl">
+            <div id="sec-radar" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-md border border-outline-variant/30">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-primary text-xl">radar</span>
+                  <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Equilibrium Hexagon Radar</h2>
+                </div>
+                <span class="font-caption text-caption text-on-surface-variant">Multifactorial Balance</span>
+              </div>
+              <div class="h-72 w-full flex items-center justify-center">
+                <canvas id="student-radar-chart"></canvas>
+              </div>
+            </div>
+            <div id="sec-feeds" class="scroll-mt-header p-space-lg rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-md border border-outline-variant/30">
+              <div class="flex items-center justify-between">
+                <span class="font-label-md text-label-md font-semibold text-on-surface">Telemetry Feeds</span>
+                <span class="inline-flex items-center gap-1 font-caption text-caption text-primary">
+                  <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                  Synchronized
+                </span>
+              </div>
+
+              <div class="flex flex-col gap-space-xs">
+                <div class="flex items-center justify-between p-space-xs rounded-md hover:bg-surface-container transition-colors">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                      <span class="material-symbols-outlined text-base">school</span>
+                    </span>
+                    <div class="flex flex-col">
+                      <span class="font-label-sm text-label-sm font-semibold text-on-surface">Canvas LMS</span>
+                      <span class="font-caption text-caption text-on-surface-variant">4 active courses</span>
+                    </div>
+                  </div>
+                  <span class="font-caption text-caption text-primary font-medium">Auto-Sync On</span>
+                </div>
+
+                <div class="flex items-center justify-between p-space-xs rounded-md hover:bg-surface-container transition-colors">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                      <span class="material-symbols-outlined text-base">calendar_today</span>
+                    </span>
+                    <div class="flex flex-col">
+                      <span class="font-label-sm text-label-sm font-semibold text-on-surface">Google Calendar</span>
+                      <span class="font-caption text-caption text-on-surface-variant">Study blocks & classes</span>
+                    </div>
+                  </div>
+                  <span class="font-caption text-caption text-primary font-medium">Connected</span>
+                </div>
+
+                <div class="flex items-center justify-between p-space-xs rounded-md hover:bg-surface-container transition-colors">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                      <span class="material-symbols-outlined text-base">watch</span>
+                    </span>
+                    <div class="flex flex-col">
+                      <span class="font-label-sm text-label-sm font-semibold text-on-surface">Apple Health & Oura</span>
+                      <span class="font-caption text-caption text-on-surface-variant">Sleep, HRV & Steps</span>
+                    </div>
+                  </div>
+                  <span class="font-caption text-caption text-primary font-medium">Live</span>
+                </div>
+              </div>
+
+              <div class="pt-space-2xs text-center">
+                <a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="alert('Manage Telemetry Sources: Canvas LMS connected; Google Calendar active.')">
+                  Manage Connected Health & University Data
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Quick Navigation Gateway Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary/50 flex flex-col justify-between hover:shadow-md transition cursor-pointer group" onclick="window.navigateToPage('pulse')">
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">self_improvement</span>
+              </div>
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-primary transition">60s Daily Pulse</h4>
+              <p class="font-body-sm text-xs text-on-surface-variant">Log real-time mood and cognitive vitality in under 60 seconds.</p>
+            </div>
+            <div class="pt-3 flex items-center text-xs font-semibold text-primary gap-1">
+              <span>Open Daily Pulse Page</span>
+              <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary/50 flex flex-col justify-between hover:shadow-md transition cursor-pointer group" onclick="window.navigateToPage('survey')">
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">tune</span>
+              </div>
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-secondary transition">10-Factor AI Survey</h4>
+              <p class="font-body-sm text-xs text-on-surface-variant">Adjust academic, sleep, and lifestyle sliders for ML risk prediction.</p>
+            </div>
+            <div class="pt-3 flex items-center text-xs font-semibold text-secondary gap-1">
+              <span>Launch Simulator</span>
+              <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-tertiary/50 flex flex-col justify-between hover:shadow-md transition cursor-pointer group" onclick="window.navigateToPage('spikes')">
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">event_upcoming</span>
+              </div>
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-tertiary transition">Pressure Spikes & Plans</h4>
+              <p class="font-body-sm text-xs text-on-surface-variant">Review Canvas LMS deadlines and scheduled buffer recovery blocks.</p>
+            </div>
+            <div class="pt-3 flex items-center text-xs font-semibold text-tertiary gap-1">
+              <span>View Academic Spikes</span>
+              <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+            <!-- ================= PAGE 2: 60s DAILY PULSE (DEDICATED PAGE) ================= -->
+      <div id="page-pulse" class="app-page hidden flex flex-col w-full pb-12 gap-space-xl">
+        <div class="relative w-full overflow-hidden rounded-xl bg-gradient-to-b from-primary-fixed/25 via-surface-container-low to-surface-container/40 p-space-xl shadow-sm border border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+              <span class="font-label-sm text-xs uppercase font-bold text-primary tracking-wider">Circadian Mind Check-In</span>
+            </div>
+            <h2 class="font-headline-lg text-2xl font-bold text-on-surface tracking-tight">60-Second Daily Emotional Pulse</h2>
+            <p class="font-body-sm text-xs text-on-surface-variant max-w-xl">
+              Quick, low-friction telemetry capturing mental clarity, subjective strain, and energy to calibrate real-time rest prescriptions.
+            </p>
+          </div>
+          <button type="button" onclick="window.navigateToPage('dashboard')" class="px-4 py-2 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-semibold inline-flex items-center gap-1.5 transition">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            <span>Back to Dashboard</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+          <div class="lg:col-span-7 flex flex-col gap-space-xl">
+            <div id="checkInPanel" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/95 shadow-md flex flex-col gap-space-md border border-outline-variant/30">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-space-xs">
+                  <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+                  <span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Daily Pulse</span>
+                </div>
+                <span class="font-caption text-caption text-on-surface-variant">60s Check-in</span>
+              </div>
+              
+              <p class="font-body-sm text-body-sm text-on-surface-variant">
+                How does your mind feel right at this moment?
+              </p>
+
+              <!-- 5 Emotion Choices -->
+              <div class="grid grid-cols-5 gap-1 pt-space-xs text-center" id="moodSelector">
+                <button class="mood-btn flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-surface-container-high transition-all" data-mood="overwhelmed">
+                  <span class="text-2xl select-none">🌧️</span>
+                  <span class="font-caption text-caption text-on-surface-variant">Tense</span>
+                </button>
+                <button class="mood-btn flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-surface-container-high transition-all" data-mood="stressed">
+                  <span class="text-2xl select-none">⛅</span>
+                  <span class="font-caption text-caption text-on-surface-variant">Busy</span>
+                </button>
+                <button class="mood-btn flex flex-col items-center gap-1 p-2 rounded-lg bg-primary-fixed/50 transition-all font-semibold" data-mood="steady">
+                  <span class="text-2xl select-none">🌱</span>
+                  <span class="font-caption text-caption text-primary font-bold">Steady</span>
+                </button>
+                <button class="mood-btn flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-surface-container-high transition-all" data-mood="energized">
+                  <span class="text-2xl select-none">⚡</span>
+                  <span class="font-caption text-caption text-on-surface-variant">Active</span>
+                </button>
+                <button class="mood-btn flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-surface-container-high transition-all" data-mood="thriving">
+                  <span class="text-2xl select-none">✨</span>
+                  <span class="font-caption text-caption text-on-surface-variant">Thriving</span>
+                </button>
+              </div>
+
+              <!-- Slider Range Indicator -->
+              <div class="flex flex-col gap-space-2xs mt-space-xs">
+                <div class="flex justify-between font-caption text-caption text-on-surface-variant">
+                  <span>Cognitive Energy</span>
+                  <span class="font-semibold text-primary" id="sliderValueText">68 / 100</span>
+                </div>
+                <input class="w-full accent-primary h-2 bg-surface-container rounded-lg cursor-pointer" id="energySlider" max="100" min="10" type="range" value="68"/>
+              </div>
+
+              <!-- Live Gentle Feedback Box -->
+              <div class="p-space-sm rounded-lg bg-surface-container text-on-surface-variant font-body-sm text-body-sm flex items-start gap-space-xs transition-all" id="moodFeedback">
+                <span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">favorite</span>
+                <span id="feedbackText">Steady is wonderful. You are maintaining balance through mid-week transitions.</span>
+              </div>
+
+              <!-- Integrated 10-Factor AI Telemetry for Risk Prediction -->
+              <div class="pt-space-sm border-t border-outline-variant/30 space-y-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-lg">tune</span>
+                    <span class="font-label-md text-xs font-bold text-on-surface uppercase tracking-wide">10-Factor AI Risk Calibration</span>
+                  </div>
+                  <span class="text-[11px] font-medium text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full">Included for Genuine Risk Score</span>
+                </div>
+                <p class="text-xs text-on-surface-variant">Adjust your current academic &amp; lifestyle habits below to execute live machine learning risk inference:</p>
+
+                <!-- Academic Pillar -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-gpa">Current CGPA (0-10)</label>
+                      <span id="pulse-gpa-val" class="font-bold text-primary">8.2</span>
+                    </div>
+                    <input type="range" id="pulse-gpa" min="0.0" max="10.0" step="0.1" value="8.2" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-study-hours">Daily Study Hours</label>
+                      <span id="pulse-study-hours-val" class="font-bold text-primary">5.5 hrs</span>
+                    </div>
+                    <input type="range" id="pulse-study-hours" min="0" max="14" step="0.5" value="5.5" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-workload">Course Workload (1-10)</label>
+                      <span id="pulse-workload-val" class="font-bold text-primary">6</span>
+                    </div>
+                    <input type="range" id="pulse-workload" min="1" max="10" step="1" value="6" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-exam-pressure">Exams in 14 Days</label>
+                      <span id="pulse-exam-pressure-val" class="font-bold text-primary">2</span>
+                    </div>
+                    <input type="range" id="pulse-exam-pressure" min="0" max="10" step="1" value="2" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="sm:col-span-2 bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-attendance">Attendance Rate (%)</label>
+                      <span id="pulse-attendance-val" class="font-bold text-primary">85%</span>
+                    </div>
+                    <input type="range" id="pulse-attendance" min="40" max="100" step="1" value="85" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+                </div>
+
+                <!-- Sleep & Lifestyle Pillar -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-sleep-hours">Sleep Duration (hrs/night)</label>
+                      <span id="pulse-sleep-hours-val" class="font-bold text-primary">7.0 hrs</span>
+                    </div>
+                    <input type="range" id="pulse-sleep-hours" min="3" max="11" step="0.5" value="7.0" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-sleep-quality">Sleep Quality (1-10)</label>
+                      <span id="pulse-sleep-quality-val" class="font-bold text-primary">7</span>
+                    </div>
+                    <input type="range" id="pulse-sleep-quality" min="1" max="10" step="1" value="7" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-screen-time">Screen Time (hrs/day)</label>
+                      <span id="pulse-screen-time-val" class="font-bold text-primary">5.5 hrs</span>
+                    </div>
+                    <input type="range" id="pulse-screen-time" min="1" max="14" step="0.5" value="5.5" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-exercise">Exercise Days / Week</label>
+                      <span id="pulse-exercise-val" class="font-bold text-primary">3 days</span>
+                    </div>
+                    <input type="range" id="pulse-exercise" min="0" max="7" step="1" value="3" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="sm:col-span-2 bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-social">Social &amp; Peer Support (1-10)</label>
+                      <span id="pulse-social-val" class="font-bold text-primary">7</span>
+                    </div>
+                    <input type="range" id="pulse-social" min="1" max="10" step="1" value="7" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+                </div>
+
+                <!-- Subjective Psychological Strain Pillar -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-stress">Perceived Stress (1-10)</label>
+                      <span id="pulse-stress-val" class="font-bold text-primary">4</span>
+                    </div>
+                    <input type="range" id="pulse-stress" min="1" max="10" step="1" value="4" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+
+                  <div class="bg-surface-container/60 p-2.5 rounded-lg space-y-1">
+                    <div class="flex justify-between font-medium text-on-surface">
+                      <label for="pulse-overwhelmed">Feeling Overwhelmed (1-10)</label>
+                      <span id="pulse-overwhelmed-val" class="font-bold text-primary">3</span>
+                    </div>
+                    <input type="range" id="pulse-overwhelmed" min="1" max="10" step="1" value="3" class="w-full accent-primary h-1.5 bg-surface-container-high rounded cursor-pointer">
+                  </div>
+                </div>
+              </div>
+
+              <button class="w-full py-3.5 px-6 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2" id="saveCheckInBtn">
+                <span class="material-symbols-outlined text-lg">model_training</span>
+                <span>Calculate Genuine AI Risk &amp; Save Pulse</span>
+              </button>
+            </div>
+          </div>
+          <div class="lg:col-span-5 flex flex-col gap-space-xl">
+            <div id="sec-prescriptions" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-md border border-outline-variant/30">
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-secondary text-xl">auto_awesome</span>
+                <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">AI Rest Prescriptions</h2>
+              </div>
+              
+              <p class="font-body-sm text-body-sm text-on-surface-variant">
+                Micro-interventions formulated from your heart rate variance & syllabus demand.
+              </p>
+
+              <div id="sidebar-recs-container" class="flex flex-col gap-space-sm mt-space-2xs">
+                <div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-label-sm text-label-sm text-secondary font-semibold flex items-center gap-1">
+                      <span class="material-symbols-outlined text-sm">nature_people</span>
+                      Outdoor Walk
+                    </span>
+                    <span class="font-caption text-caption text-on-surface-variant">Wed • 4:00 PM</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface font-medium">
+                    Block 25 mins around Campus Lake
+                  </p>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Recharge sensory channels prior to 3-hour evening chemistry lab review.
+                  </p>
+                  <div class="mt-1 flex items-center justify-end">
+                    <button class="text-primary hover:text-on-surface font-label-sm text-label-sm font-semibold inline-flex items-center gap-0.5" onclick="alert('Added 25-minute lake walk to your study schedule.')">
+                      Add to Calendar <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-label-sm text-label-sm text-primary font-semibold flex items-center gap-1">
+                      <span class="material-symbols-outlined text-sm">air</span>
+                      Breath Regulation
+                    </span>
+                    <span class="font-caption text-caption text-on-surface-variant">3 mins</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface font-medium">
+                    4-7-8 Parasympathetic Reset
+                  </p>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Gentle audio pacer designed to lower pre-exam cortical arousal.
+                  </p>
+                  <div class="mt-1 flex items-center justify-end">
+                    <button class="text-primary hover:text-on-surface font-label-sm text-label-sm font-semibold inline-flex items-center gap-0.5" onclick="alert('Starting 3-min 4-7-8 breathing pacer: Inhale 4s, Hold 7s, Exhale 8s...')">
+                      Begin Session <span class="material-symbols-outlined text-sm">play_circle</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+            <!-- ================= PAGE 3: 10-FACTOR AI ASSESSMENT (DEDICATED PAGE) ================= -->
+      <div id="page-survey" class="app-page hidden flex flex-col w-full pb-12 gap-space-xl">
+        <div class="relative w-full overflow-hidden rounded-xl bg-gradient-to-b from-secondary-fixed/25 via-surface-container-low to-surface-container/40 p-space-xl shadow-sm border border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-lg">psychology</span>
+              <span class="font-label-sm text-xs uppercase font-bold text-secondary tracking-wider">Predictive Machine Learning Simulator</span>
+            </div>
+            <h2 class="font-headline-lg text-2xl font-bold text-on-surface tracking-tight">10-Factor AI Burnout Assessment</h2>
+            <p class="font-body-sm text-xs text-on-surface-variant max-w-xl">
+              Calibrated with clinical Maslach Burnout Inventory (MBI-SS) parameters. Adjust factors to test hypothetical academic scenarios or submit an official record.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="window.navigateToPage('dashboard')" class="px-4 py-2.5 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-semibold inline-flex items-center gap-1.5 transition">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Dashboard</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- FIRST TIME SURVEY WELCOME BANNER (Gating) -->
+        <div id="survey-first-time-banner" class="hidden p-5 rounded-xl bg-gradient-to-r from-primary-fixed/40 via-surface-container-high to-secondary-fixed/30 border border-primary/30 flex items-start justify-between gap-4 shadow-sm">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary text-2xl mt-0.5">verified_user</span>
+            <div>
+              <h4 class="font-bold text-sm text-on-surface">Welcome to MindPulse AI! Please Attend Your Initial Assessment</h4>
+              <p class="text-xs text-on-surface-variant mt-1 max-w-2xl">
+                To guarantee absolute authenticity, all default scores have been removed from your dashboard. Adjust your genuine factors below and click <strong>Submit Telemetry</strong>. Machine learning will instantly calculate your authentic Burnout Risk Index, circadian reserve, and personalized recovery prescription.
+              </p>
+            </div>
+          </div>
+          <button type="button" onclick="document.getElementById('survey-first-time-banner').classList.add('hidden')" class="text-on-surface-variant hover:text-on-surface text-base font-bold shrink-0">✕</button>
+        </div>
+
+        <div id="full-survey-section" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-lg border border-outline-variant/30">
+              <div class="flex items-center justify-between border-b border-outline-variant/30 pb-4">
+                <div>
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-primary text-xl">tune</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">10-Factor AI Burnout Assessment & Simulator</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Enter your daily academic and lifestyle habits to execute real-time machine learning inference.</p>
+                </div>
+                <button type="button" id="btn-preview-risk" class="px-4 py-2 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-sm text-label-sm font-semibold transition flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">bolt</span>
+                  <span>Simulate Risk</span>
+                </button>
+              </div>
+
+              <form id="survey-form" class="space-y-6">
+                
+                <!-- SECTION 1: ACADEMIC PILLAR -->
+                <div class="space-y-3">
+                  <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">1. Academic Workload & Performance</span>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-gpa">Current CGPA (0.0 - 10.0)</label>
+                        <span id="input-gpa-val" class="font-bold text-primary">8.20</span>
+                      </div>
+                      <input type="range" id="input-gpa" min="0.0" max="10.0" step="0.1" value="8.20">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-study-hours">Daily Study Hours</label>
+                        <span id="input-study-hours-val" class="font-bold text-primary">6.0 hrs</span>
+                      </div>
+                      <input type="range" id="input-study-hours" min="0" max="14" step="0.5" value="6.0">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-workload">Perceived Course Workload (1-10)</label>
+                        <span id="input-workload-val" class="font-bold text-primary">6</span>
+                      </div>
+                      <input type="range" id="input-workload" min="1" max="10" step="1" value="6">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-exam-pressure">Exams/Deadlines Next 14 Days</label>
+                        <span id="input-exam-pressure-val" class="font-bold text-primary">3</span>
+                      </div>
+                      <input type="range" id="input-exam-pressure" min="0" max="10" step="1" value="3">
+                    </div>
+
+                    <div class="sm:col-span-2 space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-attendance">Lecture & Lab Attendance Rate (%)</label>
+                        <span id="input-attendance-val" class="font-bold text-primary">85%</span>
+                      </div>
+                      <input type="range" id="input-attendance" min="40" max="100" step="1" value="85">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SECTION 2: LIFESTYLE & SLEEP PILLAR -->
+                <div class="space-y-3 pt-4 border-t border-outline-variant/30">
+                  <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">2. Sleep & Physical Lifestyle</span>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-sleep-hours">Sleep Duration (hrs/night)</label>
+                        <span id="input-sleep-hours-val" class="font-bold text-primary">6.5 hrs</span>
+                      </div>
+                      <input type="range" id="input-sleep-hours" min="3" max="11" step="0.5" value="6.5">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-sleep-quality">Sleep Restorative Rating (1-10)</label>
+                        <span id="input-sleep-quality-val" class="font-bold text-primary">6</span>
+                      </div>
+                      <input type="range" id="input-sleep-quality" min="1" max="10" step="1" value="6">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-screen-time">Total Digital Screen Time (hrs/day)</label>
+                        <span id="input-screen-time-val" class="font-bold text-primary">6.0 hrs</span>
+                      </div>
+                      <input type="range" id="input-screen-time" min="1" max="14" step="0.5" value="6.0">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-exercise">Physical Workout Days / Week</label>
+                        <span id="input-exercise-val" class="font-bold text-primary">2 days</span>
+                      </div>
+                      <input type="range" id="input-exercise" min="0" max="7" step="1" value="2">
+                    </div>
+
+                    <div class="sm:col-span-2 space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-social">Peer & Community Social Connection (1-10)</label>
+                        <span id="input-social-val" class="font-bold text-primary">6</span>
+                      </div>
+                      <input type="range" id="input-social" min="1" max="10" step="1" value="6">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SECTION 3: PSYCHOLOGICAL PILLAR -->
+                <div class="space-y-3 pt-4 border-t border-outline-variant/30">
+                  <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">3. Subjective Stress & Energy State</span>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-mood">Daytime Vitality (1-10)</label>
+                        <span id="input-mood-val" class="font-bold text-primary">6</span>
+                      </div>
+                      <input type="range" id="input-mood" min="1" max="10" step="1" value="6">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-stress">Perceived Stress (1-10)</label>
+                        <span id="input-stress-val" class="font-bold text-primary">5</span>
+                      </div>
+                      <input type="range" id="input-stress" min="1" max="10" step="1" value="5">
+                    </div>
+
+                    <div class="space-y-1 bg-surface-container-lowest/60 p-3 rounded-lg">
+                      <div class="flex justify-between text-xs font-medium text-on-surface">
+                        <label for="input-overwhelmed">Feeling Overwhelmed (1-10)</label>
+                        <span id="input-overwhelmed-val" class="font-bold text-primary">4</span>
+                      </div>
+                      <input type="range" id="input-overwhelmed" min="1" max="10" step="1" value="4">
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="input-notes" class="block text-xs font-medium text-on-surface mb-1">Personal Journal / Academic Context Notes (Optional)</label>
+                  <textarea id="input-notes" rows="2" placeholder="e.g. Midterm season preparing for distributed systems project..." class="w-full text-xs p-3 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                </div>
+
+                <button type="submit" id="btn-submit-survey" class="w-full py-3.5 px-6 rounded-full text-sm font-semibold text-on-primary bg-primary hover:bg-primary-container shadow-md transition flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">model_training</span>
+                  <span>Submit Telemetry & Execute AI Risk Prediction</span>
+                </button>
+
+              </form>
+            </div>
+      </div>
+
+            <!-- ================= PAGE 4: ACADEMIC PRESSURE SPIKES (DEDICATED PAGE) ================= -->
+      <div id="page-spikes" class="app-page hidden flex flex-col w-full pb-12 gap-space-xl">
+        <div class="relative w-full overflow-hidden rounded-xl bg-gradient-to-b from-tertiary-fixed/30 via-surface-container-low to-surface-container/40 p-space-xl shadow-sm border border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-tertiary text-lg">event_upcoming</span>
+              <span class="font-label-sm text-xs uppercase font-bold text-tertiary tracking-wider">Canvas LMS & Calendar Sync</span>
+            </div>
+            <h2 class="font-headline-lg text-2xl font-bold text-on-surface tracking-tight">Upcoming Academic Pressure Spikes</h2>
+            <p class="font-body-sm text-xs text-on-surface-variant max-w-xl">
+              Continuous syllabus telemetry detecting intense exam windows and automatically injecting cognitive recovery buffer blocks.
+            </p>
+          </div>
+          <button type="button" onclick="window.navigateToPage('dashboard')" class="px-4 py-2 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-semibold inline-flex items-center gap-1.5 transition">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            <span>Dashboard</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+          <div class="lg:col-span-8 flex flex-col gap-space-xl">
+            <div id="sec-spikes" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-lg border border-outline-variant/30">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-secondary text-xl">event_upcoming</span>
+                  <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Academic Pressure Spikes &amp; Recovery Plans</h2>
+                </div>
+                <span class="font-caption text-caption text-primary bg-primary-fixed/40 px-3 py-1 rounded-full font-semibold">Dynamic Student Schedule</span>
+              </div>
+
+              <!-- Form to Add Academic Spike with Date/Time & Buffer (Fix Time & Calendar) -->
+              <div class="p-4 sm:p-5 rounded-xl bg-surface-container-lowest/90 border border-outline-variant/40 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-lg">add_circle</span>
+                    <h3 class="font-bold text-sm text-on-surface">Add Academic Pressure Spike / Exam / Deadline</h3>
+                  </div>
+                  <span class="text-[11px] text-on-surface-variant">No fake defaults &bull; Sets your genuine schedule</span>
+                </div>
+
+                <form id="spike-add-form" class="space-y-3">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <label for="spike-input-title" class="block font-medium text-on-surface mb-1">Event or Exam Title *</label>
+                      <input type="text" id="spike-input-title" required placeholder="e.g. Distributed Systems Midterm" class="w-full p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-xs focus:ring-2 focus:ring-primary focus:outline-none">
+                    </div>
+                    <div>
+                      <label for="spike-input-datetime" class="block font-medium text-on-surface mb-1">Date &amp; Time (Fix Event Time) *</label>
+                      <input type="datetime-local" id="spike-input-datetime" required class="w-full p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-xs focus:ring-2 focus:ring-primary focus:outline-none">
+                    </div>
+                    <div>
+                      <label for="spike-input-intensity" class="block font-medium text-on-surface mb-1">Pressure Intensity Level</label>
+                      <select id="spike-input-intensity" class="w-full p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-xs focus:ring-2 focus:ring-primary focus:outline-none">
+                        <option value="High">High Intensity (Midterm / Final Exam)</option>
+                        <option value="Moderate" selected>Moderate Pressure (Project / Presentation)</option>
+                        <option value="Low">Low / Standard (Quiz / Reading Milestone)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="spike-input-location" class="block font-medium text-on-surface mb-1">Location or Delivery Channel</label>
+                      <input type="text" id="spike-input-location" placeholder="e.g. Room 302 or Canvas Portal" class="w-full p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-xs focus:ring-2 focus:ring-primary focus:outline-none">
+                    </div>
+                    <div class="sm:col-span-2">
+                      <label for="spike-input-buffer" class="block font-medium text-on-surface mb-1">Cognitive Recovery Buffer to Reserve</label>
+                      <select id="spike-input-buffer" class="w-full p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-xs focus:ring-2 focus:ring-primary focus:outline-none">
+                        <option value="30">Reserve 30-Min Circadian Rest Buffer (Recommended)</option>
+                        <option value="15">Reserve 15-Min Quick Mental Reset</option>
+                        <option value="45">Reserve 45-Min Pre-Exam Meditation Buffer</option>
+                        <option value="60">Reserve 60-Min Deep Recovery Buffer</option>
+                        <option value="0">No Buffer at this time</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-end pt-1">
+                    <button type="submit" class="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs inline-flex items-center gap-1.5 shadow-md transition">
+                      <span class="material-symbols-outlined text-base">calendar_add_on</span>
+                      <span>Save Event &amp; Reserve Buffer Block</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Dynamic Spikes Event List Container (No fake defaults!) -->
+              <div id="spikes-events-list" class="flex flex-col gap-space-sm">
+                <!-- Rendered dynamically by app.js based on user's genuine inputs -->
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-4 flex flex-col gap-space-xl">
+            <div class="p-space-xl rounded-lg bg-surface-container-low/90 shadow-sm flex flex-col gap-space-md border border-outline-variant/30">
+              <div class="flex items-center gap-space-xs text-primary font-semibold">
+                <span class="material-symbols-outlined text-xl">tune</span>
+                <span>Active Exam Presets</span>
+              </div>
+              <p class="font-body-sm text-xs text-on-surface-variant">Recommended study pacing ahead of chemistry midterm:</p>
+              <div class="space-y-2 text-xs">
+                <div class="p-3 rounded-lg bg-surface-container flex items-center justify-between">
+                  <div>
+                    <div class="font-bold text-on-surface">Pomodoro 25 / 5</div>
+                    <div class="text-[11px] text-on-surface-variant">High-retention study cycles</div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-full bg-primary-fixed text-primary text-[10px] font-bold">Recommended</span>
+                </div>
+                <div class="p-3 rounded-lg bg-surface-container flex items-center justify-between">
+                  <div>
+                    <div class="font-bold text-on-surface">Circadian Sleep Buffer</div>
+                    <div class="text-[11px] text-on-surface-variant">Target 7.5 hrs pre-exam</div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-secondary text-[10px] font-bold">Vital</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+            <!-- ================= PAGE 5: CARE & CRISIS SANCTUARY (DEDICATED PAGE) ================= -->
+      <div id="page-care" class="app-page hidden flex flex-col w-full pb-12 gap-space-xl">
+        <div class="relative w-full overflow-hidden rounded-xl bg-gradient-to-b from-rose-100 via-surface-container-low to-surface-container/40 p-space-xl shadow-sm border border-rose-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 text-rose-800">
+              <span class="material-symbols-outlined text-lg">emergency</span>
+              <span class="font-label-sm text-xs uppercase font-bold tracking-wider">24/7 Rapid Safety Net</span>
+            </div>
+            <h2 class="font-headline-lg text-2xl font-bold text-on-surface tracking-tight">University Well-being Sanctuary</h2>
+            <p class="font-body-sm text-xs text-on-surface-variant max-w-xl">
+              Confidential, 24/7 human-in-the-loop care resources. Non-diagnostic screening with licensed counselor triage.
+            </p>
+          </div>
+          <button type="button" class="btn-open-crisis-helpline px-4 py-2.5 rounded-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-md transition">
+            <span class="material-symbols-outlined text-base">call</span>
+            <span>Dial 988 Lifeline</span>
+          </button>
+        </div>
+
+        <!-- Emergency 24/7 Hotlines Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-5 rounded-xl bg-surface-container-low border border-rose-200/80 space-y-2">
+            <div class="flex items-center gap-2 text-rose-700">
+              <span class="material-symbols-outlined text-xl">phone_in_talk</span>
+              <span class="font-bold text-xs uppercase">National 988</span>
+            </div>
+            <h3 class="font-headline-sm text-base font-bold text-on-surface">988 Suicide & Crisis</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">Free, confidential 24/7 support across the US and Canada.</p>
+            <a href="tel:988" class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 hover:underline pt-2">
+              <span>Call or Text 988</span> &rarr;
+            </a>
+          </div>
+
+          <div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined text-xl">sms</span>
+              <span class="font-bold text-xs uppercase">Crisis Text Line</span>
+            </div>
+            <h3 class="font-headline-sm text-base font-bold text-on-surface">Text HOME to 741741</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">Connect with a volunteer crisis counselor via SMS.</p>
+            <a href="sms:741741" class="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline pt-2">
+              <span>Start SMS Chat</span> &rarr;
+            </a>
+          </div>
+
+          <div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
+            <div class="flex items-center gap-2 text-secondary">
+              <span class="material-symbols-outlined text-xl">medical_services</span>
+              <span class="font-bold text-xs uppercase">Tele-MANAS</span>
+            </div>
+            <h3 class="font-headline-sm text-base font-bold text-on-surface">14416 / 1800-891-4416</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">National 24/7 mental health helpline (India, 20+ languages).</p>
+            <a href="tel:14416" class="inline-flex items-center gap-1 text-xs font-bold text-secondary hover:underline pt-2">
+              <span>Call 14416</span> &rarr;
+            </a>
+          </div>
+
+          <div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
+            <div class="flex items-center gap-2 text-tertiary">
+              <span class="material-symbols-outlined text-xl">domain</span>
+              <span class="font-bold text-xs uppercase">Campus Line</span>
+            </div>
+            <h3 class="font-headline-sm text-base font-bold text-on-surface">Ext. 4357 (HELP)</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">Direct line to Student Health Center & counselor on call.</p>
+            <a href="tel:4357" class="inline-flex items-center gap-1 text-xs font-bold text-tertiary hover:underline pt-2">
+              <span>Call Ext. 4357</span> &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Campus Sanctuaries & Academic Accommodations -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-xl">
+          <div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-3">
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined text-xl">nature_people</span>
+              <h3 class="font-headline-sm text-base font-bold text-on-surface">Campus Sanctuaries & Quiet Spaces</h3>
+            </div>
+            <p class="font-body-sm text-xs text-on-surface-variant">
+              Pre-cleared sensory-friendly zones for mindful relaxation, decompression, and breath regulation:
+            </p>
+            <ul class="space-y-2 text-xs text-on-surface-variant">
+              <li class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between">
+                <span>🌿 Memorial Library Conservatory (Quiet Zone)</span>
+                <span class="text-[10px] font-semibold text-primary">Open 24/7</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between">
+                <span>🌱 North Campus Mindfulness Garden</span>
+                <span class="text-[10px] font-semibold text-primary">Dawn to Dusk</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between">
+                <span>🛋️ Student Union Sensory Room (3rd Floor)</span>
+                <span class="text-[10px] font-semibold text-primary">8 AM - 10 PM</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-3">
+            <div class="flex items-center gap-2 text-secondary">
+              <span class="material-symbols-outlined text-xl">policy</span>
+              <h3 class="font-headline-sm text-base font-bold text-on-surface">Accommodations & Confidential Advocacy</h3>
+            </div>
+            <p class="font-body-sm text-xs text-on-surface-variant">
+              Independent support offices ensuring your health and academic progress are protected:
+            </p>
+            <ul class="space-y-2 text-xs text-on-surface-variant">
+              <li class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between">
+                <span>📋 Disability & Academic Accommodation Services</span>
+                <span class="text-[10px] font-semibold text-secondary">Ext. 4200</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between">
+                <span>⚖️ Confidential Care Ombudsperson</span>
+                <span class="text-[10px] font-semibold text-secondary">M-F 9am-5pm</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between">
+                <span>🔒 FERPA & Privacy Safeguards</span>
+                <span class="text-[10px] font-semibold text-secondary">Non-Diagnostic</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+            <!-- ================= PAGE 6: COUNSELOR SURVEILLANCE (DEDICATED PAGE) ================= -->
+      <div id="page-counselor" class="app-page hidden flex flex-col w-full pb-12 gap-space-xl">
+        <!-- Cohort KPI Cards -->
+        <div id="sec-counselor-kpis" class="scroll-mt-header grid grid-cols-2 md:grid-cols-5 gap-space-md">
+          <div class="p-space-lg rounded-lg bg-surface-container-low border border-outline-variant/30 text-center">
+            <span class="font-caption text-caption text-on-surface-variant uppercase font-bold tracking-wider">Total Monitored</span>
+            <div id="kpi-total-students" class="font-display-hero text-headline-lg font-black text-on-surface mt-1">--</div>
+            <span class="font-caption text-caption text-on-surface-variant">Enrolled Students</span>
+          </div>
+
+          <div class="p-space-lg rounded-lg bg-surface-container-low border-l-4 border-error border border-outline-variant/30 text-center">
+            <span class="font-caption text-caption text-error uppercase font-bold tracking-wider">High Risk Triage</span>
+            <div id="kpi-high-risk" class="font-display-hero text-headline-lg font-black text-error mt-1">--</div>
+            <span class="font-caption text-caption text-error font-medium">Require Outreach</span>
+          </div>
+
+          <div class="p-space-lg rounded-lg bg-surface-container-low border border-outline-variant/30 text-center">
+            <span class="font-caption text-caption text-tertiary uppercase font-bold tracking-wider">Active Alerts</span>
+            <div id="kpi-active-alerts" class="font-display-hero text-headline-lg font-black text-tertiary mt-1">--</div>
+            <span class="font-caption text-caption text-on-surface-variant">Pending Review</span>
+          </div>
+
+          <div class="p-space-lg rounded-lg bg-surface-container-low border border-outline-variant/30 text-center">
+            <span class="font-caption text-caption text-on-surface-variant uppercase font-bold tracking-wider">Cohort Avg Stress</span>
+            <div id="kpi-avg-stress" class="font-display-hero text-headline-lg font-black text-on-surface mt-1">--</div>
+            <span class="font-caption text-caption text-on-surface-variant">Scale of 1 - 10</span>
+          </div>
+
+          <div class="p-space-lg rounded-lg bg-surface-container-low border border-outline-variant/30 text-center col-span-2 md:col-span-1">
+            <span class="font-caption text-caption text-on-surface-variant uppercase font-bold tracking-wider">Avg Sleep</span>
+            <div id="kpi-avg-sleep" class="font-display-hero text-headline-lg font-black text-on-surface mt-1">--</div>
+            <span class="font-caption text-caption text-on-surface-variant">Hours / Night</span>
+          </div>
+        </div>
+
+        <!-- Alerts Queue and Cohort Distribution Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+          
+          <div id="sec-counselor-alerts" class="scroll-mt-header lg:col-span-8 p-space-xl rounded-lg bg-surface-container-low/90 border border-outline-variant/30 shadow-sm flex flex-col gap-space-md">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-outline-variant/30 gap-2">
+              <div>
+                <div class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-error text-xl">crisis_alert</span>
+                  <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Early-Warning Risk Alert Queue</h3>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Automated flags triggered by acute sleep deficit and compounding exam anxiety.</p>
+              </div>
+
+              <div class="flex items-center gap-1 text-xs">
+                <button class="alert-tab-btn px-3 py-1 rounded-full bg-primary text-on-primary font-medium active" data-status="ALL">All</button>
+                <button class="alert-tab-btn px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest" data-status="NEW">New</button>
+                <button class="alert-tab-btn px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest" data-status="IN_REVIEW">In Review</button>
+                <button class="alert-tab-btn px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest" data-status="CONTACTED">Contacted</button>
+                <button class="alert-tab-btn px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest" data-status="RESOLVED">Resolved</button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-outline-variant/30 text-on-surface-variant font-semibold text-[10px] uppercase">
+                    <th class="py-2.5 px-3">Student</th>
+                    <th class="py-2.5 px-3">Risk Index</th>
+                    <th class="py-2.5 px-3">Status</th>
+                    <th class="py-2.5 px-3">Key Trigger</th>
+                    <th class="py-2.5 px-3">Timestamp</th>
+                    <th class="py-2.5 px-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="alerts-table-body">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="sec-counselor-proportion" class="scroll-mt-header lg:col-span-4 p-space-xl rounded-lg bg-surface-container-low/90 border border-outline-variant/30 shadow-sm flex flex-col gap-space-md">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-primary text-xl">donut_large</span>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Cohort Risk Proportion</h3>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Active distribution across Balanced, Watchlist, and Triage tiers.</p>
+            <div class="h-64">
+              <canvas id="cohort-doughnut-chart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Student Directory Roster Table -->
+        <div id="sec-counselor-directory" class="scroll-mt-header p-space-xl rounded-lg bg-surface-container-low/90 border border-outline-variant/30 shadow-sm flex flex-col gap-space-md">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-outline-variant/30 gap-3">
+            <div>
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-primary text-xl">badge</span>
+                <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Monitored Student Directory</h3>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Click any student row to inspect full longitudinal telemetry and case history.</p>
+            </div>
+
+            <div class="flex items-center gap-space-sm w-full sm:w-auto">
+              <input type="text" id="student-search" placeholder="Search student name or ID..." class="text-xs px-3.5 py-2 rounded-full border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-56">
+              
+              <select id="risk-filter-select" class="text-xs px-3.5 py-2 rounded-full border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary font-medium cursor-pointer">
+                <option value="ALL">All Risk Tiers</option>
+                <option value="HIGH">High Risk Only</option>
+                <option value="MODERATE">Moderate Risk Only</option>
+                <option value="LOW">Low Risk Only</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-outline-variant/30 text-on-surface-variant font-semibold text-[10px] uppercase">
+                  <th class="py-2.5 px-3">Student Name & ID</th>
+                  <th class="py-2.5 px-3">Department</th>
+                  <th class="py-2.5 px-3">Risk Assessment</th>
+                  <th class="py-2.5 px-3">Sleep Avg</th>
+                  <th class="py-2.5 px-3">Stress Score</th>
+                  <th class="py-2.5 px-3">Last Check-In</th>
+                </tr>
+              </thead>
+              <tbody id="roster-table-body">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- App Dashboard Footer -->
+    <footer class="w-full bg-surface-container-low border-t border-outline-variant/30 mt-space-4xl no-print">
+      <div class="max-w-[76rem] mx-auto px-gutter-desktop py-space-3xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-space-xl items-start pb-space-2xl border-b border-outline-variant/20">
+          
+          <div class="md:col-span-5 flex flex-col gap-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-primary text-2xl">nest_eco_leaf</span>
+              <span class="font-headline-sm text-headline-sm text-primary font-semibold">MindPulse University Care</span>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+              Gentle, predictive emotional analytics designed for academic balance. Supporting collegiate wellbeing through compassionate artificial intelligence and clinical privacy.
+            </p>
+            <div class="flex items-center gap-space-xs text-on-surface-variant">
+              <span class="material-symbols-outlined text-sm text-primary">lock</span>
+              <span class="font-caption text-caption">FERPA & HIPAA Calibrated Architecture. Encrypted at Rest & In-Transit.</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-4 flex flex-col gap-space-xs p-space-lg rounded-lg bg-surface-container/60 border border-outline-variant/40">
+            <div class="flex items-center gap-space-xs text-secondary">
+              <span class="material-symbols-outlined text-xl">support_agent</span>
+              <span class="font-label-md text-label-md font-semibold text-secondary">24/7 Campus Crisis Rapid Connect</span>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Immediate, confidential support with university licensed care counselors.</p>
+            <a class="inline-flex items-center gap-space-xs font-label-md text-label-md text-primary font-semibold hover:text-on-surface transition-colors" href="tel:988">
+              <span class="material-symbols-outlined text-base">call</span>
+              Dial 988 or Campus Line Ext. 4357 (HELP)
+            </a>
+          </div>
+
+          <div class="md:col-span-3 flex flex-col gap-space-sm">
+            <span class="font-label-md text-label-md font-semibold text-on-surface">Student Care Links</span>
+            <nav class="flex flex-col gap-space-xs">
+              <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="document.getElementById('crisis-modal').classList.remove('hidden')">Student Health Portal</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="alert('Campus Sanctuaries: Memorial Library Quiet Room, Student Union Conservatory, North Campus Mindfulness Garden.')">Quiet Spaces & Campus Sanctuaries</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="alert('Academic Accommodations: Contact Disability & Accommodation Services at ext. 4200.')">Academic Accommodation Support</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="alert('Confidential Care Ombudsman: Available M-F 9am-5pm for independent student advocacy.')">Confidential Care Ombudsman</a>
+            </nav>
+          </div>
+        </div>
+
+        <div class="pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md text-on-surface-variant font-caption text-caption">
+          <span>© 2026 MindPulse Academic AI Sanctuary. College Final-Year Project.</span>
+          <div class="flex items-center gap-space-lg">
+            <a class="hover:text-on-surface transition-colors cursor-pointer" onclick="alert('FERPA: Student records and survey telemetry are strictly isolated and never shared without explicit consent.')">FERPA Disclosures</a>
+            <a class="hover:text-on-surface transition-colors cursor-pointer" onclick="alert('Privacy Framework: Local database storage; non-diagnostic screening safeguards.')">Privacy Framework</a>
+            <a class="hover:text-on-surface transition-colors cursor-pointer" onclick="alert('Ethics in Mental AI: AI provides risk indicators only; human counselors oversee all clinical decisions.')">Ethics in Mental AI</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 3. SHARED MODALS (ASSESSMENT, CASE MANAGEMENT, DRILLDOWN, BENCHMARK, CRISIS)-->
+  <!-- ========================================================================= -->
+  
+  <!-- MODAL 1: ASSESSMENT RESULTS & RECOMMENDATIONS -->
+  <div id="assessment-modal" class="modal-container hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-blur overflow-y-auto">
+    <div class="bg-surface-container-lowest rounded-xl max-w-2xl w-full p-space-xl shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto border border-outline-variant/30">
+      <button class="modal-close-btn absolute top-5 right-5 text-on-surface-variant hover:text-on-surface text-xl font-bold">✕</button>
+
+      <div id="modal-preview-banner" class="hidden bg-primary-fixed text-on-primary-fixed text-xs px-3 py-1.5 rounded-full font-medium">
+        ⚡ <strong>Simulator Preview:</strong> This calculation is simulated and has not modified permanent records.
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 border-b border-outline-variant/30 pb-5">
+        <div class="relative w-32 h-32 flex items-center justify-center">
+          <svg class="w-32 h-32 transform -rotate-90">
+            <circle cx="64" cy="64" r="45" stroke="#e1eae4" stroke-width="10" fill="transparent"/>
+            <circle id="modal-meter-arc" cx="64" cy="64" r="45" stroke="#355f4d" stroke-width="10" stroke-linecap="round" fill="transparent" class="risk-meter-arc"/>
+          </svg>
+          <div class="absolute flex flex-col items-center justify-center text-center">
+            <span id="modal-risk-score" class="font-display-hero text-2xl font-black text-on-surface leading-none">--%</span>
+            <span class="font-caption text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold mt-1">Risk Score</span>
+          </div>
+        </div>
+
+        <div class="text-center sm:text-left space-y-2 flex-grow">
+          <div class="flex items-center justify-center sm:justify-start gap-2">
+            <span id="modal-risk-badge" class="badge-low px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wider">Low</span>
+            <span class="font-caption text-xs text-on-surface-variant">Machine Learning Inference</span>
+          </div>
+          <h3 id="modal-risk-title" class="font-headline-md text-xl font-bold text-on-surface">Low Risk Detected</h3>
+          <p class="font-body-sm text-xs text-on-surface-variant">
+            Multivariate analysis has generated your burnout index. Below are the key contributing factors and personalized wellness action plan.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-4 rounded-lg bg-surface-container border border-outline-variant/30 space-y-2">
+          <h4 class="font-label-sm text-xs font-bold uppercase tracking-wider text-error flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">warning</span>
+            <span>Primary Contributing Risk Drivers</span>
+          </h4>
+          <ul id="modal-drivers-list" class="space-y-1.5 text-xs text-on-surface-variant">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+
+        <div class="p-4 rounded-lg bg-surface-container border border-outline-variant/30 space-y-2">
+          <h4 class="font-label-sm text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">shield</span>
+            <span>Protective & Buffering Factors</span>
+          </h4>
+          <ul id="modal-protective-list" class="space-y-1.5 text-xs text-on-surface-variant">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-secondary text-base">spa</span>
+          <span>Personalized Wellness Interventions</span>
+        </h4>
+        <div id="modal-recs-container" class="space-y-3">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <div class="border-t border-outline-variant/30 pt-4 flex items-center justify-between">
+        <button id="btn-modal-download-report" class="h-9 px-5 rounded-full text-xs font-semibold text-primary bg-primary-fixed hover:bg-primary-container hover:text-on-primary transition inline-flex items-center justify-center gap-1.5 shadow-sm">
+          <span class="material-symbols-outlined text-base">download</span>
+          <span>Download Assessment</span>
+        </button>
+        <button class="modal-close-btn h-9 px-6 rounded-full text-xs font-semibold text-on-primary bg-primary hover:bg-primary-container transition inline-flex items-center justify-center">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: COUNSELOR CASE MANAGEMENT -->
+  <div id="manage-alert-modal" class="modal-container hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-blur overflow-y-auto">
+    <div class="bg-surface-container-lowest rounded-xl max-w-xl w-full p-space-xl shadow-2xl space-y-5 relative border border-outline-variant/30">
+      <button class="modal-close-btn absolute top-5 right-5 text-on-surface-variant hover:text-on-surface text-xl font-bold">✕</button>
+
+      <div class="border-b border-outline-variant/30 pb-3">
+        <h3 class="font-headline-sm text-base font-bold text-on-surface flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-lg">edit_note</span>
+          <span>Counselor Triage & Case Notes</span>
+        </h3>
+        <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">Manage alert status and record human intervention steps.</p>
+      </div>
+
+      <div class="bg-surface-container p-3 rounded-lg border border-outline-variant/30 flex items-center justify-between text-xs">
+        <div>
+          <span class="text-on-surface-variant block font-medium">Student</span>
+          <span id="modal-alert-student" class="font-bold text-on-surface text-sm">--</span>
+        </div>
+        <div class="text-right">
+          <span class="text-on-surface-variant block font-medium">Risk Assessment</span>
+          <span id="modal-alert-score" class="font-bold text-error text-sm">--</span>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <label for="modal-alert-status-select" class="block font-label-sm text-xs font-semibold text-on-surface">Update Alert Status</label>
+        <select id="modal-alert-status-select" class="w-full text-xs p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary font-medium cursor-pointer">
+          <option value="NEW">NEW — Unreviewed Alert</option>
+          <option value="IN_REVIEW">IN_REVIEW — Reviewing Survey Trajectory</option>
+          <option value="CONTACTED">CONTACTED — Reached out via Campus Portal</option>
+          <option value="RESOLVED">RESOLVED — Consultation Completed / De-escalated</option>
+        </select>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block font-label-sm text-xs font-semibold text-on-surface">Counselor Case History</label>
+        <div id="modal-alert-notes-list" class="space-y-2 max-h-40 overflow-y-auto border border-outline-variant/30 rounded-lg p-3 bg-surface-container">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <div class="space-y-2 pt-2 border-t border-outline-variant/30">
+        <label for="modal-alert-new-note" class="block font-label-sm text-xs font-semibold text-on-surface">Add Clinical / Intervention Note</label>
+        <textarea id="modal-alert-new-note" rows="2" placeholder="e.g. Conducted 20-min session. Student agreed to reduce screen time and meet academic advisor..." class="w-full text-xs p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+        <input type="text" id="modal-alert-action-taken" placeholder="Action summary (e.g. 1-on-1 Consultation Completed)" class="w-full text-xs p-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest">
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-outline-variant/30">
+        <button class="modal-close-btn h-9 px-5 text-xs font-medium text-on-surface-variant bg-surface-container hover:bg-surface-container-high rounded-full inline-flex items-center justify-center">Cancel</button>
+        <button id="btn-save-alert-update" class="h-9 px-5 text-xs font-semibold text-on-primary bg-primary hover:bg-primary-container rounded-full shadow-sm inline-flex items-center justify-center">Save & Update</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: STUDENT PROFILE DRILL-DOWN MODAL -->
+  <div id="student-drilldown-modal" class="modal-container hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-blur overflow-y-auto">
+    <div class="bg-surface-container-lowest rounded-xl max-w-3xl w-full p-space-xl shadow-2xl space-y-5 relative max-h-[90vh] overflow-y-auto border border-outline-variant/30">
+      <button class="modal-close-btn absolute top-5 right-5 text-on-surface-variant hover:text-on-surface text-xl font-bold">✕</button>
+
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div>
+          <h3 id="drilldown-name" class="font-headline-sm text-lg font-bold text-on-surface">Student Profile</h3>
+          <p id="drilldown-meta" class="font-body-sm text-xs text-on-surface-variant">ID • Department • Year</p>
+        </div>
+        <div class="text-right">
+          <div class="font-caption text-xs text-on-surface-variant font-medium">Burnout Risk</div>
+          <div class="flex items-baseline gap-1.5">
+            <span id="drilldown-risk-score" class="font-display-hero text-xl font-black text-on-surface">--%</span>
+            <span id="drilldown-risk-level" class="font-label-sm text-xs font-bold uppercase">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-label-sm text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Longitudinal Risk & Stress History</h4>
+        <div class="h-64 border border-outline-variant/30 rounded-lg p-3 bg-surface-container">
+          <canvas id="drilldown-trend-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button class="modal-close-btn h-9 px-6 text-xs font-semibold bg-primary hover:bg-primary-container text-on-primary rounded-full inline-flex items-center justify-center">Close Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: ML BENCHMARK & ALGORITHM COMPARISON -->
+  <div id="benchmark-modal" class="modal-container hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-blur overflow-y-auto">
+    <div class="bg-surface-container-lowest rounded-xl max-w-3xl w-full p-space-xl shadow-2xl space-y-5 relative max-h-[90vh] overflow-y-auto border border-outline-variant/30">
+      <button class="modal-close-btn absolute top-5 right-5 text-on-surface-variant hover:text-on-surface text-xl font-bold">✕</button>
+
+      <div class="border-b border-outline-variant/30 pb-3">
+        <h3 class="font-headline-sm text-lg font-bold text-on-surface flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">insights</span>
+          <span>Machine Learning Algorithm Benchmark & Comparison</span>
+        </h3>
+        <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">Empirical 5-fold cross-validation evaluation across 4 candidate architectures.</p>
+      </div>
+
+      <div class="h-56">
+        <canvas id="benchmark-bar-chart"></canvas>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-outline-variant/30 text-on-surface-variant uppercase font-semibold text-[10px]">
+              <th class="py-2 px-4">Algorithm</th>
+              <th class="py-2 px-4">Accuracy</th>
+              <th class="py-2 px-4">Weighted F1</th>
+              <th class="py-2 px-4">Macro Precision</th>
+              <th class="py-2 px-4">Macro Recall</th>
+            </tr>
+          </thead>
+          <tbody id="benchmark-table-body">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="p-4 bg-surface-container rounded-lg border border-outline-variant/30 space-y-2">
+        <h4 class="font-label-sm text-xs font-bold uppercase tracking-wider text-on-surface">Top Feature Importance Weights (Explainable AI)</h4>
+        <div id="benchmark-features-container" class="space-y-1">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button class="modal-close-btn h-9 px-6 text-xs font-semibold bg-primary hover:bg-primary-container text-on-primary rounded-full inline-flex items-center justify-center">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: 24/7 CRISIS HELPLINES & EMERGENCY RESOURCES -->
+  <div id="crisis-modal" class="modal-container hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-blur overflow-y-auto">
+    <div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-space-xl shadow-2xl space-y-5 relative border border-outline-variant/30">
+      <button class="modal-close-btn absolute top-5 right-5 text-on-surface-variant hover:text-on-surface text-xl font-bold">✕</button>
+
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center mx-auto text-2xl font-bold">
+          <span class="material-symbols-outlined text-2xl">support</span>
+        </div>
+        <h3 class="font-headline-sm text-lg font-bold text-on-surface">Confidential Mental Health & Crisis Support</h3>
+        <p class="font-body-sm text-xs text-on-surface-variant">Free, confidential assistance available 24 hours a day, 7 days a week.</p>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-on-surface">Suicide & Crisis Lifeline (US & Canada)</div>
+            <div class="text-on-surface-variant">Call or Text available 24/7</div>
+          </div>
+          <a href="tel:988" class="px-4 py-2 bg-error hover:bg-red-700 text-on-error font-bold rounded-full text-xs transition">Call 988</a>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-on-surface">Crisis Text Line</div>
+            <div class="text-on-surface-variant">Text HOME to connect with a crisis counselor</div>
+          </div>
+          <span class="px-3.5 py-1.5 bg-surface-container-highest text-on-surface font-mono font-bold rounded-full text-xs">Text 741741</span>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-on-surface">Tele-MANAS (India)</div>
+            <div class="text-on-surface-variant">National Tele-Mental Health Programme</div>
+          </div>
+          <a href="tel:14416" class="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-bold rounded-full text-xs transition">Call 14416</a>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-on-surface">Campus Health & Psychological Services</div>
+            <div class="text-on-surface-variant">University Health Center 24/7 Helpline</div>
+          </div>
+          <span class="px-3.5 py-1.5 bg-surface-container-highest text-on-surface font-semibold rounded-full text-xs">Ext. 4357</span>
+        </div>
+      </div>
+
+      <p class="font-caption text-[11px] text-on-surface-variant text-center">
+        If you or someone you know is in immediate life-threatening danger, please contact local emergency emergency services (911 / 112) immediately.
+      </p>
+
+      <div class="flex justify-center pt-2">
+        <button class="modal-close-btn h-9 px-6 text-xs font-semibold bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-full inline-flex items-center justify-center">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: PWA APP DOWNLOAD & INSTALLATION GUIDE -->
+  <div id="pwa-install-modal" class="modal-container hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-blur overflow-y-auto">
+    <div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-space-xl shadow-2xl space-y-5 relative border border-outline-variant/30">
+      <button class="modal-close-btn absolute top-5 right-5 text-on-surface-variant hover:text-on-surface text-xl font-bold">✕</button>
+
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 rounded-2xl bg-primary-fixed/50 flex items-center justify-center mx-auto shadow-sm">
+          <img src="/static/icons/icon.svg" alt="MindPulse Logo" class="w-11 h-11"/>
+        </div>
+        <h3 class="font-headline-sm text-lg font-bold text-on-surface">Download & Install MindPulse AI</h3>
+        <p class="font-body-sm text-xs text-on-surface-variant">
+          Install as a native Progressive Web App (PWA) on your PC, Mac, iPhone, iPad, or Android phone for fast offline screening and instant access.
+        </p>
+      </div>
+
+      <!-- Native Install Action (Shown when supported) -->
+      <div id="pwa-native-install-box" class="p-4 rounded-xl bg-primary-fixed/30 border border-primary/20 flex flex-col items-center gap-3">
+        <p class="text-xs text-on-surface font-semibold text-center">Ready to install directly:</p>
+        <button id="pwa-modal-install-btn" class="w-full h-11 px-6 rounded-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-md transition">
+          <span class="material-symbols-outlined text-lg">download</span>
+          <span>Download & Install App Now</span>
+        </button>
+      </div>
+
+      <!-- Step-by-step Instructions for all devices -->
+      <div class="space-y-3 text-xs">
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-start gap-3">
+          <span class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">desktop_windows</span>
+          <div>
+            <div class="font-bold text-on-surface">Windows / Mac (Chrome, Edge, Brave)</div>
+            <div class="text-on-surface-variant">Click the <strong>Install</strong> button in the browser address bar (top right) or Menu ⋮ &gt; <em>Install MindPulse AI</em>.</div>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-start gap-3">
+          <span class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">phone_iphone</span>
+          <div>
+            <div class="font-bold text-on-surface">iPhone & iPad (Safari)</div>
+            <div class="text-on-surface-variant">Tap the <strong>Share</strong> button <span class="font-bold">[↑]</span> in the toolbar, scroll down, and tap <strong>"Add to Home Screen"</strong>.</div>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/30 flex items-start gap-3">
+          <span class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">android</span>
+          <div>
+            <div class="font-bold text-on-surface">Android (Chrome / Samsung Internet)</div>
+            <div class="text-on-surface-variant">Tap the three dots <strong>⋮</strong> in the top-right corner, then select <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-2">
+        <span class="text-[11px] text-on-surface-variant inline-flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-primary">offline_pin</span>
+          Works offline with cached surveillance
+        </span>
+        <button class="modal-close-btn h-9 px-6 text-xs font-semibold bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-full inline-flex items-center justify-center">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. FLOATING BACK-TO-TOP BUTTON (FAST SCROLL RECOVERY)                     -->
+  <!-- ========================================================================= -->
+  <button id="btn-back-to-top" type="button" class="fixed bottom-20 right-4 lg:bottom-8 lg:right-8 z-40 w-11 h-11 rounded-full bg-primary hover:bg-primary-container text-on-primary shadow-lg hover:shadow-xl border border-primary/20 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none transform translate-y-3 focus:outline-none active:scale-90 no-print" title="Back to top">
+    <span class="material-symbols-outlined text-2xl">keyboard_arrow_up</span>
+  </button>
+
+  <!-- ========================================================================= -->
+  <!-- 5. MOBILE STICKY BOTTOM NAVIGATION BAR (PWA NATIVE FEEL)                 -->
+  <!-- ========================================================================= -->
+  <nav id="mobile-bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 py-1.5 px-2 shadow-[0_-4px_16px_rgba(21,29,26,0.08)] flex lg:hidden items-center justify-around no-print">
+    
+    <button id="mob-nav-home" data-page="dashboard" type="button" class="mob-nav-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-primary bg-primary-fixed/40 transition active:scale-95 flex-1 max-w-[70px]" title="Dashboard Overview">
+      <span class="material-symbols-outlined text-xl">home</span>
+      <span class="font-label-sm text-[10px] font-bold mt-0.5 tracking-tight">Home</span>
+    </button>
+
+    <button id="mob-nav-pulse" data-page="pulse" type="button" class="mob-nav-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-on-surface-variant hover:text-primary transition active:scale-95 flex-1 max-w-[70px]" title="Daily 60s Micro-Pulse Check-in">
+      <span class="material-symbols-outlined text-xl">self_improvement</span>
+      <span class="font-label-sm text-[10px] font-medium mt-0.5 tracking-tight">Pulse</span>
+    </button>
+
+    <button id="mob-nav-survey" data-page="survey" type="button" class="mob-nav-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-on-surface-variant hover:text-primary transition active:scale-95 flex-1 max-w-[70px]" title="10-Factor AI Burnout Survey">
+      <span class="material-symbols-outlined text-xl">tune</span>
+      <span class="font-label-sm text-[10px] font-medium mt-0.5 tracking-tight">10-Factor</span>
+    </button>
+
+    <button id="mob-nav-spikes" data-page="spikes" type="button" class="mob-nav-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-on-surface-variant hover:text-primary transition active:scale-95 flex-1 max-w-[70px]" title="Upcoming Pressure Spikes & Rest Plans">
+      <span class="material-symbols-outlined text-xl">event_upcoming</span>
+      <span class="font-label-sm text-[10px] font-medium mt-0.5 tracking-tight">Spikes</span>
+    </button>
+
+    <button id="mob-nav-care" data-page="care" type="button" class="mob-nav-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-rose-700 hover:text-rose-900 transition active:scale-95 flex-1 max-w-[70px]" title="24/7 Crisis & Care Sanctuary">
+      <span class="material-symbols-outlined text-xl">emergency</span>
+      <span class="font-label-sm text-[10px] font-bold mt-0.5 tracking-tight">Care</span>
+    </button>
+
+  </nav>
+
+  <!-- Modular Application Scripts -->
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
